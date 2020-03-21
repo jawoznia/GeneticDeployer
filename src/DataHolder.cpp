@@ -8,7 +8,7 @@ namespace data
 {
 
 DataHolder::DataHolder(const std::string &data) : mData(data) {
-
+    ProcessData();
 }
 
 void DataHolder::ProcessData() {
