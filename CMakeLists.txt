@@ -1,7 +1,18 @@
 cmake_minimum_required(VERSION 3.15)
-project(Maybe_this_time_tests)
+project(Genetic_deployer)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Maybe_this_time_tests main.cpp)
-add_subdirectory(src)
+
+set(SOURCES
+        ${PROJECT_SOURCE_DIR}/main.cpp
+        ${PROJECT_SOURCE_DIR}/src/FileReader.cpp
+        ${PROJECT_SOURCE_DIR}/src/GeneticDeployer.cpp
+)
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+target_include_directories(${PROJECT_NAME}
+        PUBLIC
+        include/
+)

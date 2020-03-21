@@ -1,6 +1,8 @@
 #include <iostream>
+#include "include/GeneticDeployer.hpp"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << "============================= WELCOME TO GENETIC DEPLOYER =============================\n";
+    GeneticDeployer geneticDeployer;
     return 0;
 }
