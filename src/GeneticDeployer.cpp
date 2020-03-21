@@ -12,5 +12,6 @@ GeneticDeployer::GeneticDeployer() : mFileReader(std::make_unique<data::FileRead
 
 void GeneticDeployer::Start() {
     std::cout << "Starting data loading.\n";
-    std::cout << mFileReader->LoadData() << "\n";
+
+    mDataHandler = std::make_unique<data::DataHolder>(mFileReader->LoadData());
 }

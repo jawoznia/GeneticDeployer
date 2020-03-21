@@ -19,7 +19,7 @@ FileReader::~FileReader() {
 std::string FileReader::LoadData() {
     if (mStream.is_open())
         return std::string(std::istreambuf_iterator<char>(mStream), {});
-    return std::string{"Couldn't load data. File is not open."};
+    return std::string{""};
 }
 
 }

@@ -5,10 +5,11 @@ set(CMAKE_CXX_STANDARD 20)
 
 
 set(SOURCES
+        # cpp
         ${PROJECT_SOURCE_DIR}/main.cpp
         ${PROJECT_SOURCE_DIR}/src/FileReader.cpp
         ${PROJECT_SOURCE_DIR}/src/GeneticDeployer.cpp
-)
+        ${PROJECT_SOURCE_DIR}/src/DataHolder.cpp)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 

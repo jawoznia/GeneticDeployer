@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "FileReader.hpp"
+#include "DataHolder.hpp"
 
 
 class GeneticDeployer {
@@ -19,6 +20,7 @@ private:
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
+    std::unique_ptr<data::DataHolder> mDataHandler;
 };
 
 
