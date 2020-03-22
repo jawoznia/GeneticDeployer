@@ -10,21 +10,6 @@
 #include "FileReader.hpp"
 #include "DataHolder.hpp"
 
-/*
- *
- * In DataLoader getline create DataHolder and setWidth and setHeight
- *
- * then loadMap
- *
- * Then InitPeople(uint_32 size)
- *
- * AddPerson(std::make_unique<Person>(company, sth, sth..)
- *
- * InitCompanies
- * AddCompany(companyName, sth)
- *
- */
-
 class GeneticDeployer {
 public:
     GeneticDeployer();
@@ -34,7 +19,7 @@ private:
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
-    std::unique_ptr<data::DataHolder> mDataHandler;
+    std::unique_ptr<data::DataHolder> mDataHolder;
 };
 
 

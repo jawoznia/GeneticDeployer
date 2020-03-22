@@ -5,8 +5,12 @@
 #ifndef MAYBE_THIS_TIME_TESTS_FILEREADER_HPP
 #define MAYBE_THIS_TIME_TESTS_FILEREADER_HPP
 
-#include <string>
 #include <fstream>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "DataHolder.hpp"
 
 namespace data
 {
@@ -16,13 +20,34 @@ public:
     FileReader(const std::string&& fileName);
     ~FileReader();
 
-    std::string LoadData();
+    std::unique_ptr<DataHolder> LoadData();
 
 private:
+    void ProcessStream();
+    void LoadSeats(const std::vector<std::string>&);
+    void LoadPeople(const std::vector<std::string>&);
+    void LoadCompanies(const std::vector<std::string>&);
 
+private:
+    std::string mData;
     std::ifstream mStream;
+    std::unique_ptr<data::DataHolder> mDataHolder;
 };
 
+/*
+ *
+ * In DataLoader getline create DataHolder and setWidth and setHeight
+ *
+ * then loadMap
+ *
+ * Then InitPeople(uint_32 size)
+ *
+ * AddPerson(std::make_unique<Person>(company, sth, sth..)
+ *
+ * InitCompanies
+ * AddCompany(companyName, sth)
+ *
+ */
 }
 
 #endif //MAYBE_THIS_TIME_TESTS_FILEREADER_HPP
