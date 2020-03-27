@@ -14,7 +14,7 @@ enum class SeatType {
     Unavailable = 2
 };
 
-struct Person {
+struct Developer {
     uint32_t bonus_potential;
     uint32_t company_id;
     std::vector<uint32_t> skill_ids;

@@ -7,10 +7,6 @@
 namespace data
 {
 
-DataHolder::DataHolder() {
-}
-
-
 void DataHolder::SetSeatsWidth(const uint32_t size) {
     mSeats.resize(size);
 }
@@ -44,6 +40,52 @@ void DataHolder::SetSeat(uint32_t width, uint32_t height, const char val) {
         default:
             mSeats[width][height] = SeatType::Unavailable;
     }
+}
+
+void DataHolder::SetDevelopers(const std::vector<std::string> &words) {
+    const uint32_t initial_index = std::stoi(words.at(1)) + 2;
+    const uint32_t size_of_devs = std::stoi(words.at(initial_index));
+
+    mDevelopers.resize(size_of_devs);
+    const uint32_t end_index = initial_index + size_of_devs;
+
+    auto words_iterator = words.begin() + initial_index + 1;
+    for (uint32_t num_of_devs = 0; num_of_devs < size_of_devs; ++num_of_devs)
+    {
+        SetDeveloper(words_iterator);
+    }
+}
+
+void DataHolder::SetDeveloper(words_it &it) {
+    auto s = *it;
+    Developer dev;
+
+    dev.company_id = insertCompany(*it);
+
+    std::advance(it, 1);
+    dev.bonus_potential = std::stoi(*it);
+
+    std::advance(it, 1);
+    const auto skills_size = std::stoi(*it);
+    std::vector<uint32_t> skills;
+    for (uint32_t i = 0; i < skills_size; ++i) {
+        skills.push_back(insertSkill(*it));
+    }
+    dev.skill_ids = skills;
+
+    mDevelopers.push_back(dev);
+}
+
+uint32_t DataHolder::insertCompany(const std::string& company_name) {
+    static uint32_t company_id = 0;
+    auto inserted_company = mCompanies.insert({company_name, company_id});
+    return inserted_company.second ? company_id++ : inserted_company.first->second;
+}
+
+uint32_t DataHolder::insertSkill(const std::string& skill_name) {
+    static uint32_t skill_id = 0;
+    auto inserted_skill = mSkills.insert({skill_name, skill_id});
+    return inserted_skill.second ? skill_id++ : inserted_skill.first->second;
 }
 
 }

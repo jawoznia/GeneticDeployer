@@ -43,7 +43,7 @@ void FileReader::LoadSeats(const std::vector<std::string>& words) {
 }
 
 void FileReader::LoadPeople(const std::vector<std::string>& words) {
-
+    mDataHolder->SetDevelopers(words);
 }
 
 void FileReader::LoadCompanies(const std::vector<std::string>& words) {
