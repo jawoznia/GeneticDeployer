@@ -19,6 +19,7 @@ public:
     DataHolder() = default;
     void SetSeats(const std::vector<std::string>&);
     void SetDevelopers(const std::vector<std::string>&);
+    void SetManagers(const std::vector<std::string>&);
 
 private:
     void SetSeat(uint32_t, uint32_t, const char);

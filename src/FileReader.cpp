@@ -26,7 +26,7 @@ std::unique_ptr<DataHolder> FileReader::LoadData() {
 
     mDataHolder->SetSeats(words);
     mDataHolder->SetDevelopers(words);
-//    LoadCompanies(words);
+    mDataHolder->SetManagers(words);
 
     return std::move(mDataHolder);
 }

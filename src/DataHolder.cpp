@@ -90,4 +90,17 @@ uint32_t DataHolder::insertSkill(const std::string& skill_name) {
     return inserted_skill.second ? skill_id++ : inserted_skill.first->second;
 }
 
+void DataHolder::SetManagers(const std::vector<std::string> &words) {
+//    const uint32_t initial_index = std::stoi(words.at(1)) + 2;
+//    const uint32_t size_of_devs = std::stoi(words.at(initial_index));
+//
+//    mDevelopers.resize(size_of_devs);
+//
+//    auto words_iterator = words.begin() + initial_index + 1;
+//    for (uint32_t i = 0; i < size_of_devs; ++i)
+//    {
+//        mDevelopers.at(i) = CreateDeveloper(words_iterator);
+//    }
+}
+
 }
