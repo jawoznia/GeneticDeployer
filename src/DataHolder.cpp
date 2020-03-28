@@ -63,16 +63,19 @@ void DataHolder::SetDeveloper(words_it &it) {
     dev.company_id = insertCompany(*it);
 
     std::advance(it, 1);
-    dev.bonus_potential = std::stoi(*it);
+    dev.bonus_potential = std::stoi(std::string(*it));
 
     std::advance(it, 1);
-    const auto skills_size = std::stoi(*it);
+    const auto skills_size = std::stoi(std::string(*it));
+
     std::vector<uint32_t> skills;
     for (uint32_t i = 0; i < skills_size; ++i) {
+        std::advance(it, 1);
         skills.push_back(insertSkill(*it));
     }
     dev.skill_ids = skills;
 
+    std::advance(it, 1);
     mDevelopers.push_back(dev);
 }
 
