@@ -25,7 +25,7 @@ private:
     void SetSeatsWidth(const uint32_t);
     void SetSeatsHeight(const uint32_t);
 
-    void SetDeveloper(words_it &);
+    Developer CreateDeveloper(words_it &);
 
     uint32_t insertCompany(const std::string&);
     uint32_t insertSkill(const std::string&);

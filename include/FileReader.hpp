@@ -24,9 +24,6 @@ public:
 
 private:
     void ProcessStream();
-    void LoadSeats(const std::vector<std::string>&);
-    void LoadPeople(const std::vector<std::string>&);
-    void LoadCompanies(const std::vector<std::string>&);
 
 private:
     std::string mData;

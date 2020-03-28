@@ -47,16 +47,15 @@ void DataHolder::SetDevelopers(const std::vector<std::string> &words) {
     const uint32_t size_of_devs = std::stoi(words.at(initial_index));
 
     mDevelopers.resize(size_of_devs);
-    const uint32_t end_index = initial_index + size_of_devs;
 
     auto words_iterator = words.begin() + initial_index + 1;
-    for (uint32_t num_of_devs = 0; num_of_devs < size_of_devs; ++num_of_devs)
+    for (uint32_t i = 0; i < size_of_devs; ++i)
     {
-        SetDeveloper(words_iterator);
+        mDevelopers.at(i) = CreateDeveloper(words_iterator);
     }
 }
 
-void DataHolder::SetDeveloper(words_it &it) {
+Developer DataHolder::CreateDeveloper(words_it &it) {
     auto s = *it;
     Developer dev;
 
@@ -68,15 +67,15 @@ void DataHolder::SetDeveloper(words_it &it) {
     std::advance(it, 1);
     const auto skills_size = std::stoi(std::string(*it));
 
-    std::vector<uint32_t> skills;
+    std::vector<uint32_t> skills(skills_size);
     for (uint32_t i = 0; i < skills_size; ++i) {
         std::advance(it, 1);
-        skills.push_back(insertSkill(*it));
+        skills.at(i) = insertSkill(*it);
     }
     dev.skill_ids = skills;
 
     std::advance(it, 1);
-    mDevelopers.push_back(dev);
+    return dev;
 }
 
 uint32_t DataHolder::insertCompany(const std::string& company_name) {

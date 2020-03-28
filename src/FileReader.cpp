@@ -24,9 +24,9 @@ std::unique_ptr<DataHolder> FileReader::LoadData() {
     std::vector<std::string> words;
     boost::split(words, mData, [](char c){return c == ' ' or c == '\n';} );
 
-    LoadSeats(words);
-    LoadPeople(words);
-    LoadCompanies(words);
+    mDataHolder->SetSeats(words);
+    mDataHolder->SetDevelopers(words);
+//    LoadCompanies(words);
 
     return std::move(mDataHolder);
 }
@@ -34,20 +34,8 @@ std::unique_ptr<DataHolder> FileReader::LoadData() {
 void FileReader::ProcessStream() {
     if (mStream.is_open()){
         mData = std::string(std::istreambuf_iterator<char>(mStream), {});
+        mStream.close();
     }
-}
-
-void FileReader::LoadSeats(const std::vector<std::string>& words) {
-    mDataHolder->SetSeats(words);
-    std::cout << "Seats set." << std::endl;
-}
-
-void FileReader::LoadPeople(const std::vector<std::string>& words) {
-    mDataHolder->SetDevelopers(words);
-}
-
-void FileReader::LoadCompanies(const std::vector<std::string>& words) {
-
 }
 
 }
