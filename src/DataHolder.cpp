@@ -48,33 +48,33 @@ void DataHolder::SetDevelopers(const std::vector<std::string> &words) {
 
     mDevelopers.resize(size_of_devs);
 
-    auto words_iterator = words.begin() + initial_index + 1;
+    mWords_iterator = words.begin() + initial_index + 1;
     for (uint32_t i = 0; i < size_of_devs; ++i)
     {
-        mDevelopers.at(i) = CreateDeveloper(words_iterator);
+        mDevelopers.at(i) = CreateDeveloper();
     }
 }
 
-Developer DataHolder::CreateDeveloper(words_it &it) {
-    auto s = *it;
+Developer DataHolder::CreateDeveloper() {
+    auto s = *mWords_iterator;
     Developer dev;
 
-    dev.company_id = insertCompany(*it);
+    dev.company_id = insertCompany(*mWords_iterator);
 
-    std::advance(it, 1);
-    dev.bonus_potential = std::stoi(std::string(*it));
+    std::advance(mWords_iterator, 1);
+    dev.bonus_potential = std::stoi(std::string(*mWords_iterator));
 
-    std::advance(it, 1);
-    const auto skills_size = std::stoi(std::string(*it));
+    std::advance(mWords_iterator, 1);
+    const auto skills_size = std::stoi(std::string(*mWords_iterator));
 
     std::vector<uint32_t> skills(skills_size);
     for (uint32_t i = 0; i < skills_size; ++i) {
-        std::advance(it, 1);
-        skills.at(i) = insertSkill(*it);
+        std::advance(mWords_iterator, 1);
+        skills.at(i) = insertSkill(*mWords_iterator);
     }
     dev.skill_ids = skills;
 
-    std::advance(it, 1);
+    std::advance(mWords_iterator, 1);
     return dev;
 }
 
@@ -91,16 +91,23 @@ uint32_t DataHolder::insertSkill(const std::string& skill_name) {
 }
 
 void DataHolder::SetManagers(const std::vector<std::string> &words) {
-//    const uint32_t initial_index = std::stoi(words.at(1)) + 2;
-//    const uint32_t size_of_devs = std::stoi(words.at(initial_index));
-//
-//    mDevelopers.resize(size_of_devs);
-//
-//    auto words_iterator = words.begin() + initial_index + 1;
-//    for (uint32_t i = 0; i < size_of_devs; ++i)
-//    {
-//        mDevelopers.at(i) = CreateDeveloper(words_iterator);
-//    }
+    const uint32_t size_of_devs = std::stoi(*mWords_iterator);
+    mManagers.resize(size_of_devs);
+
+    std::advance(mWords_iterator, 1);
+    for (uint32_t i = 0; i < size_of_devs; ++i) {
+        mManagers.at(i) = CreateManager();
+    }
+}
+
+Manager DataHolder::CreateManager() {
+    Manager manager;
+    manager.company_id = insertCompany(*mWords_iterator);
+
+    std::advance(mWords_iterator, 1);
+    manager.bonus_potential = std::stoi(*mWords_iterator);
+    std::advance(mWords_iterator, 1);
+    return manager;
 }
 
 }
