@@ -1,3 +1,5 @@
 cmake-build-debug/
 .idea/
 tests/lib/
+build/
+tests/build/
