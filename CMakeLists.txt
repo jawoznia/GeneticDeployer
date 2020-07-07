@@ -11,15 +11,20 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 enable_testing()
 
 add_subdirectory(${LIB_DIR}/googletest)
+#add_subdirectory(src)
 
 SET(HEADERS
-    calc.hpp
-    hello.hpp
+    include/DataHolder.hpp
+    include/FileReader.hpp
+    include/GeneticDeployer.hpp
+    include/DataStructures.hpp
 )
 set(SOURCES
-    hello.cpp
+    src/DataHolder.cpp
+    src/FileReader.cpp
+    src/GeneticDeployer.cpp
 )
 
-add_library(${This} STATIC ${SOURCES} ${HEADERS})
+add_library(${This} STATIC ${HEADERS} ${SOURCES})
 
 add_subdirectory(tests)

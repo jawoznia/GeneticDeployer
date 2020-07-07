@@ -2,7 +2,7 @@
 // Created by Jan Woźniak on 21-Mar-20.
 //
 
-#include "DataHolder.hpp"
+#include "../include/DataHolder.hpp"
 
 namespace data
 {
