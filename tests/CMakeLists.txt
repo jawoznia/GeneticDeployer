@@ -1,3 +1,4 @@
+enable_testing()
 # 'Google_test' is the subproject name
 project(Google_tests)
 

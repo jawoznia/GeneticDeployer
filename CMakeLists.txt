@@ -1,23 +1,25 @@
-cmake_minimum_required(VERSION 3.15)
-project(Genetic_deployer)
+cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_CXX_STANDARD 20)
-set(Boost_INCLUDE_DIR /usr/include/boost)
+set(This Sitzen_zie_dupen)
+set(LIB_DIR libs)
+project(${This} C CXX)
 
-find_package(Boost REQUIRED COMPONENTS)
-include_directories(${Boost_INCLUDE_DIR})
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(SOURCES
-        # cpp
-        ${PROJECT_SOURCE_DIR}/main.cpp
-        ${PROJECT_SOURCE_DIR}/src/FileReader.cpp
-        ${PROJECT_SOURCE_DIR}/src/GeneticDeployer.cpp
-        ${PROJECT_SOURCE_DIR}/src/DataHolder.cpp include/DataStructures.hpp)
+enable_testing()
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+add_subdirectory(${LIB_DIR}/googletest)
 
-target_include_directories(${PROJECT_NAME}
-        PUBLIC
-        include/
+SET(HEADERS
+    calc.hpp
+    hello.hpp
 )
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
+set(SOURCES
+    hello.cpp
+)
+
+add_library(${This} STATIC ${SOURCES} ${HEADERS})
+
+add_subdirectory(tests)
