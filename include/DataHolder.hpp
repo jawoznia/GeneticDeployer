@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 
-#include "DataStructures.hpp"
+#include "../include/DataStructures.hpp"
 
 namespace data
 {

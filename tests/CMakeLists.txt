@@ -1,11 +1,19 @@
-enable_testing()
-# 'Google_test' is the subproject name
-project(Google_tests)
+cmake_minimum_required(VERSION 3.16)
 
-# 'lib' is the folder with Google Test sources
-include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+set(This Sitzen_zie_dupen-TESTS)
 
-# 'Google_Tests_run' is the target name
-# 'test1.cpp tests2.cpp' are source files with tests
-add_executable(Google_Tests_run gtest_main.cpp some_tests.cpp)
-target_link_libraries(Google_Tests_run gtest gtest_main)
+set(Sources
+    DeployerTests.cpp
+    some_tests.cpp
+)
+
+add_executable(${This} ${Sources})
+target_link_libraries(${This}
+    gtest_main
+    Sitzen_zie_dupen
+)
+
+add_test(
+    NAME ${This}
+    COMMAND ${This}
+)

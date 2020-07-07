@@ -5,18 +5,18 @@
 #include "gtest/gtest.h"
 
 #include <memory>
-#include "GeneticDeployer.hpp"
+#include "../include/GeneticDeployer.hpp"
 
 class DeployerFixture : public ::testing::Test {
 public:
-    SomeFixture() : mSome_value(5), mSut(std::make_unique<GeneticDeployer>()) {}
+    DeployerFixture() : mSome_value(5), mSut(std::make_unique<GeneticDeployer>()) {}
 
 protected:
     std::unique_ptr<GeneticDeployer> mSut;
     uint32_t mSome_value;
-    std::unique_ptr<Divider> mDivider;
 };
 
 TEST_F(DeployerFixture, SomeTest) {
-    sut->start();
+    std::cout << "Starting Deployer Test.\n";
+    mSut->Start();
 }

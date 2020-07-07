@@ -7,14 +7,13 @@
 
 #include <memory>
 
-#include "FileReader.hpp"
-#include "DataHolder.hpp"
+#include "../include/FileReader.hpp"
+#include "../include/DataHolder.hpp"
 
 class GeneticDeployer {
 public:
     GeneticDeployer();
 
-private:
     void Start();
 
 private:
