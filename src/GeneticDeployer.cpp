@@ -7,7 +7,6 @@
 #include "../include/GeneticDeployer.hpp"
 
 GeneticDeployer::GeneticDeployer() : mFileReader(std::make_unique<data::FileReader>("../data/a_solar.txt")) {
-    Start();
 }
 
 void GeneticDeployer::Start() {

@@ -9,11 +9,10 @@
 
 class DeployerFixture : public ::testing::Test {
 public:
-    DeployerFixture() : mSome_value(5), mSut(std::make_unique<GeneticDeployer>()) {}
+    DeployerFixture() : mSut(std::make_unique<GeneticDeployer>()) {}
 
 protected:
     std::unique_ptr<GeneticDeployer> mSut;
-    uint32_t mSome_value;
 };
 
 TEST_F(DeployerFixture, SomeTest) {

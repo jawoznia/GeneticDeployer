@@ -3,6 +3,7 @@
 //
 
 #include "../include/DataHolder.hpp"
+#include <iostream>
 
 namespace data
 {
@@ -18,11 +19,17 @@ void DataHolder::SetSeatsHeight(const uint32_t size) {
 }
 
 void DataHolder::SetSeats(const std::vector<std::string>& words) {
+    if (words.empty())
+    {
+        std::cout << "Loaded words are empty. Stopping creating Configuration.\n";
+        return;
+    }
     SetSeatsWidth(std::stoi(words.at(1)));
     SetSeatsHeight(std::stoi(words.at(0)));
 
     for (int row_index = 0; row_index < mSeats.size(); ++row_index) {
         for (int column_index = 0; column_index < mSeats[row_index].size(); ++column_index) {
+            std::cout << "row_index = " << row_index << "; column_index = " << column_index << "\n";
             SetSeat(row_index, column_index, words.at(row_index + 2).at(column_index));
         }
     }
