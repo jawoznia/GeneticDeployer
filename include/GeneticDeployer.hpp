@@ -27,9 +27,9 @@ private:
 private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
-    std::vector<Chromosome> mSolution;
+    std::vector<std::unique_ptr<Chromosome>> mSolutions;
 
-    std::uint32_t mSizeOfPopulation;
+    std::uint32_t mSizeOfPopulation = 20;
 };
 
 

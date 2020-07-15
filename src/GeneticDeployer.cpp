@@ -50,5 +50,10 @@ void GeneticDeployer::Calculate()
 
 void GeneticDeployer::InitPopulation()
 {
-
+    mSolutions.resize(mSizeOfPopulation);
+    for (auto& solution : mSolutions)
+    {
+        std::cout << "Haj jah!\n";
+        solution = std::make_unique<Chromosome>(mDataHolder);
+    }    
 }

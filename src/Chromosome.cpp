@@ -1,5 +1,10 @@
 #include "Chromosome.hpp"
 
+Chromosome::Chromosome(const data::DataHolder& data)
+{
+    
+}
+
 void Chromosome::calculateFitness()
 {
 
