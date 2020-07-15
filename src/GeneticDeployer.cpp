@@ -34,6 +34,14 @@ void GeneticDeployer::Start() {
  * b) Maybe time.
  * */
 
+/*
+ * Chromosome -> handle solution and it's score. Also it should have logic to calculate fitness.
+ *              -> store also shared pointer to all developers and managers
+ *              3
+ * GeneticDeployer -> create random solutions stored in std::array
+ *                  -> think about some way to swap data between them.
+ */
+
 void GeneticDeployer::Calculate()
 {
     InitPopulation();

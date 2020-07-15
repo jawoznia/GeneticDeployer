@@ -5,10 +5,11 @@
 #ifndef GENETIC_DEPLOYER_DATAHOLDER_HPP
 #define GENETIC_DEPLOYER_DATAHOLDER_HPP
 
-#include <map>
-#include <string>
-
 #include "../include/DataStructures.hpp"
+
+#include <map>
+#include <memory>
+#include <string>
 
 namespace data
 {
@@ -26,8 +27,8 @@ private:
     void SetSeatsWidth(const uint32_t);
     void SetSeatsHeight(const uint32_t);
 
-    Person CreateDeveloper();
-    Person CreateManager();
+    std::shared_ptr<Person> CreateDeveloper();
+    std::shared_ptr<Person> CreateManager();
 
     uint32_t insertCompany(const std::string&);
     uint32_t insertSkill(const std::string&);
@@ -43,9 +44,9 @@ private:
     std::vector<std::vector<SeatType>> mSeats;
 
     // Will hold developers
-    std::vector<Person> mDevelopers;
+    std::vector<std::shared_ptr<Person>> mDevelopers;
     // Will hold managers
-    std::vector<Person> mManagers;
+    std::vector<std::shared_ptr<Person>> mManagers;
 
     words_it mWords_iterator;
 

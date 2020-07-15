@@ -62,14 +62,14 @@ void DataHolder::SetDevelopers(const std::vector<std::string> &words) {
     }
 }
 
-Person DataHolder::CreateDeveloper() {
+std::shared_ptr<Person> DataHolder::CreateDeveloper() {
     auto s = *mWords_iterator;
-    Person dev;
+    auto dev(std::make_shared<Person>());
 
-    dev.company_id = insertCompany(*mWords_iterator);
+    dev->company_id = insertCompany(*mWords_iterator);
 
     std::advance(mWords_iterator, 1);
-    dev.bonus_potential = std::stoi(std::string(*mWords_iterator));
+    dev->bonus_potential = std::stoi(std::string(*mWords_iterator));
 
     std::advance(mWords_iterator, 1);
     const auto skills_size = std::stoi(std::string(*mWords_iterator));
@@ -79,7 +79,7 @@ Person DataHolder::CreateDeveloper() {
         std::advance(mWords_iterator, 1);
         skills.at(i) = insertSkill(*mWords_iterator);
     }
-    dev.skill_ids = skills;
+    dev->skill_ids = skills;
 
     std::advance(mWords_iterator, 1);
     return dev;
@@ -107,14 +107,14 @@ void DataHolder::SetManagers(const std::vector<std::string> &words) {
     }
 }
 
-Person DataHolder::CreateManager() {
-    Person manager;
-    manager.company_id = insertCompany(*mWords_iterator);
+std::shared_ptr<Person> DataHolder::CreateManager() {
+    auto manager(std::make_shared<Person>());
+    manager->company_id = insertCompany(*mWords_iterator);
 
     std::advance(mWords_iterator, 1);
-    manager.bonus_potential = std::stoi(*mWords_iterator);
+    manager->bonus_potential = std::stoi(*mWords_iterator);
     std::advance(mWords_iterator, 1);
-    return manager;
+    return std::move(manager);
 }
 
 }
