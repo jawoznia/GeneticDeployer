@@ -26,8 +26,8 @@ private:
     void SetSeatsWidth(const uint32_t);
     void SetSeatsHeight(const uint32_t);
 
-    Developer CreateDeveloper();
-    Manager CreateManager();
+    Person CreateDeveloper();
+    Person CreateManager();
 
     uint32_t insertCompany(const std::string&);
     uint32_t insertSkill(const std::string&);
@@ -43,9 +43,9 @@ private:
     std::vector<std::vector<SeatType>> mSeats;
 
     // Will hold developers
-    std::vector<Developer> mDevelopers;
+    std::vector<Person> mDevelopers;
     // Will hold managers
-    std::vector<Manager> mManagers;
+    std::vector<Person> mManagers;
 
     words_it mWords_iterator;
 

@@ -17,6 +17,12 @@ public:
     void Start();
 
 private:
+    bool ShouldEnd();
+
+    void InitPopulation();
+    void Calculate();
+
+private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
 };

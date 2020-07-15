@@ -14,15 +14,10 @@ enum class SeatType {
     Unavailable = 2
 };
 
-struct Developer {
+struct Person {
     uint32_t company_id;
     uint32_t bonus_potential;
     std::vector<uint32_t> skill_ids;
-};
-
-struct Manager {
-    uint32_t company_id;
-    uint32_t bonus_potential;
 };
 
 #endif //GENETIC_DEPLOYER_DATASTRUCTURES_HPP

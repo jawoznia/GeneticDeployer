@@ -62,9 +62,9 @@ void DataHolder::SetDevelopers(const std::vector<std::string> &words) {
     }
 }
 
-Developer DataHolder::CreateDeveloper() {
+Person DataHolder::CreateDeveloper() {
     auto s = *mWords_iterator;
-    Developer dev;
+    Person dev;
 
     dev.company_id = insertCompany(*mWords_iterator);
 
@@ -107,8 +107,8 @@ void DataHolder::SetManagers(const std::vector<std::string> &words) {
     }
 }
 
-Manager DataHolder::CreateManager() {
-    Manager manager;
+Person DataHolder::CreateManager() {
+    Person manager;
     manager.company_id = insertCompany(*mWords_iterator);
 
     std::advance(mWords_iterator, 1);
