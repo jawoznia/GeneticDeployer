@@ -5,10 +5,12 @@
 #ifndef MAYBE_THIS_TIME_TESTS_GENETICDEPLOYER_HPP
 #define MAYBE_THIS_TIME_TESTS_GENETICDEPLOYER_HPP
 
-#include <memory>
-
-#include "../include/FileReader.hpp"
+#include "../include/Chromosome.hpp"
 #include "../include/DataHolder.hpp"
+#include "../include/FileReader.hpp"
+
+#include <memory>
+#include <vector>
 
 class GeneticDeployer {
 public:
@@ -25,6 +27,9 @@ private:
 private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
+    std::vector<Chromosome> mSolution;
+
+    std::uint32_t mSizeOfPopulation;
 };
 
 
