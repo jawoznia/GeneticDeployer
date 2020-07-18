@@ -1,4 +1,5 @@
 #include "../include/Chromosome.hpp"
+#include <iostream>
 
 Chromosome::Chromosome(const data::DataHolder& data)
 {
@@ -6,16 +7,17 @@ Chromosome::Chromosome(const data::DataHolder& data)
     mDevs = data.getDevelopers();
     mManagers = data.getManagers();
 
-    const std::uint32_t sizeOfRows = data.getSeats().size();
-    mSolution.reserve(sizeOfRows);
+    const auto& seats(data.getSeats());
+    const std::uint32_t sizeOfRows = seats.size();
+    mSolution.resize(sizeOfRows);
     for (std::uint32_t row = 0; row < sizeOfRows; ++row)
     {
-        const std::uint32_t sizeOfColumns = data.getSeats().at(row).size();
-        mSolution.at(row).reserve(sizeOfColumns);
+        const std::uint32_t sizeOfColumns = seats[row].size();
+        mSolution[row].resize(sizeOfColumns);
         for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
         {
-            mSolution.at(row).at(column).mType = data.getSeats().at(row).at(column);
-            mSolution.at(row).at(column).mPerson = std::make_shared<Person>();
+            mSolution[row][column].mType = seats[row][column];
+            mSolution[row][column].mPerson = std::make_shared<Person>();
         }
     }
 }
