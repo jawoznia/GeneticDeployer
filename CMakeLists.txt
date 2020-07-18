@@ -14,12 +14,14 @@ add_subdirectory(${LIB_DIR}/googletest)
 #add_subdirectory(src)
 
 SET(HEADERS
+    include/Chromosome.hpp
     include/DataHolder.hpp
     include/FileReader.hpp
     include/GeneticDeployer.hpp
     include/DataStructures.hpp
 )
 set(SOURCES
+    src/Chromosome.cpp
     src/DataHolder.cpp
     src/FileReader.cpp
     src/GeneticDeployer.cpp

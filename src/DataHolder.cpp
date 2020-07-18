@@ -117,4 +117,19 @@ std::shared_ptr<Person> DataHolder::CreateManager() {
     return std::move(manager);
 }
 
+std::vector<std::shared_ptr<Person>> DataHolder::getDevelopers() const
+{
+    return mDevelopers;
+}
+
+std::vector<std::shared_ptr<Person>> DataHolder::getManagers() const
+{
+    return mManagers;
+}
+
+std::vector<std::vector<SeatType>> DataHolder::getSeats() const
+{
+    return mSeats;
+}
+
 }

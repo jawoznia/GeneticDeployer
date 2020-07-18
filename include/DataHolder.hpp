@@ -22,6 +22,10 @@ public:
     void SetDevelopers(const std::vector<std::string>&);
     void SetManagers(const std::vector<std::string>&);
 
+    std::vector<std::shared_ptr<Person>> getDevelopers() const;
+    std::vector<std::shared_ptr<Person>> getManagers() const;
+    std::vector<std::vector<SeatType>> getSeats() const;
+
 private:
     void SetSeat(uint32_t, uint32_t, const char);
     void SetSeatsWidth(const uint32_t);
@@ -49,7 +53,6 @@ private:
     std::vector<std::shared_ptr<Person>> mManagers;
 
     words_it mWords_iterator;
-
 };
 
 }

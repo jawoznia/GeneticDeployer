@@ -54,6 +54,6 @@ void GeneticDeployer::InitPopulation()
     for (auto& solution : mSolutions)
     {
         std::cout << "Haj jah!\n";
-        solution = std::make_unique<Chromosome>(mDataHolder);
+        solution = std::make_unique<Chromosome>(*mDataHolder);
     }    
 }
