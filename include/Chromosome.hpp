@@ -5,6 +5,7 @@
 #include "DataStructures.hpp"
 
 #include <memory>
+#include <random>
 #include <vector>
 
 class Gene
@@ -30,6 +31,10 @@ public:
     std::vector<std::vector<Gene>> mSolution;
     std::vector<std::shared_ptr<Person>> mDevs;
     std::vector<std::shared_ptr<Person>> mManagers;
+
+private:
+    std::random_device rd;
+    std::mt19937 mt;
 };
 
 #endif //GENETIC_DEPLOYER_CHROMOSOME_HPP

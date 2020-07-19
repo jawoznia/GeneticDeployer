@@ -5,6 +5,7 @@
 #include <unordered_set>
 
 Chromosome::Chromosome(const data::DataHolder& data)
+    : mt(rd())
 {
     mDevs = data.getDevelopers();
     mManagers = data.getManagers();
@@ -62,12 +63,12 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
 {
     std::unordered_set<std::uint32_t> allSkills;
     std::merge(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(), std::back_inserter(allSkills));
+        person2.skill_ids.begin(), person2.skill_ids.end(), std::inserter(allSkills, allSkills.begin()));
     std::unordered_set<std::uint32_t> commonSkills;
     std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(), std::back_inserter(commonSkills));
+        person2.skill_ids.begin(), person2.skill_ids.end(), std::inserter(commonSkills, commonSkills.begin()));
     // const std::uint32_t workPotential = 
-    
+
 }
 
 std::uint32_t Chromosome::getFitness()
