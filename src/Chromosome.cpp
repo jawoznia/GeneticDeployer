@@ -65,10 +65,8 @@ void Chromosome::calculateFitness()
     for (std::uint32_t row = 0; row < sizeOfRows; ++row)
     {
         const std::uint32_t sizeOfColumns = mSolution[row].size();
-        std::cout << "; max[" << sizeOfRows << "][" << sizeOfColumns << "]";
         for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
         {
-            std::cout << "; current[" << row << "][" << column << "]";
             calculatePairsScore(row, column, sizeOfRows, sizeOfColumns);
         }
     }
@@ -77,15 +75,43 @@ void Chromosome::calculateFitness()
 void Chromosome::calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
     const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns)
 {
-    const auto& centerPerson(*mSolution[row][column].mPerson);
+    const auto& centerPerson(mSolution[row][column].mPerson);
+    if (not centerPerson)
+    {
+        return;
+    }
     if (row != 0)
-        addPersonScoreToFitness(centerPerson, *mSolution[row - 1][column].mPerson);
+    {
+        const auto& person(mSolution[row - 1][column].mPerson);
+        if (person)
+        {
+            addPersonScoreToFitness(*centerPerson, *person);
+        }
+    }
     if (column != 0)
-        addPersonScoreToFitness(centerPerson, *mSolution[row][column - 1].mPerson);
+    {
+        const auto& person(mSolution[row][column - 1].mPerson);
+        if (person)
+        {
+            addPersonScoreToFitness(*centerPerson, *person);
+        }
+    }
     if (row + 1 != sizeOfRows)
-        addPersonScoreToFitness(centerPerson, *mSolution[row + 1][column].mPerson);
+    {
+        const auto& person(mSolution[row + 1][column].mPerson);
+        if (person)
+        {
+            addPersonScoreToFitness(*centerPerson, *person);
+        }
+    }
     if (column + 1 != sizeOfColumns)
-        addPersonScoreToFitness(centerPerson, *mSolution[row][column + 1].mPerson);
+    {
+        const auto& person(mSolution[row][column + 1].mPerson);
+        if (person)
+        {
+            addPersonScoreToFitness(*centerPerson, *person);
+        }
+    }
 }
 
 void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& person2)
@@ -96,7 +122,10 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
     std::unordered_set<std::uint32_t> commonSkills;
     std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
         person2.skill_ids.begin(), person2.skill_ids.end(), std::inserter(commonSkills, commonSkills.begin()));
-    // const std::uint32_t workPotential = 
+    const std::uint32_t workPotential = commonSkills.size() * (allSkills.size() - commonSkills.size());
+    const std::uint32_t bonusPotential =
+        person1.company_id == person2.company_id ? person1.bonus_potential * person2.bonus_potential : 0;
+    mFitness += workPotential + bonusPotential;
 
 }
 
