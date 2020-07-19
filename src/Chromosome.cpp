@@ -1,5 +1,8 @@
 #include "../include/Chromosome.hpp"
+
+#include <algorithm>
 #include <iostream>
+#include <unordered_set>
 
 Chromosome::Chromosome(const data::DataHolder& data)
 {
@@ -44,19 +47,27 @@ void Chromosome::calculateFitness()
 void Chromosome::calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
     const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns)
 {
+    const auto& centerPerson(*mSolution[row][column].mPerson);
     if (row != 0)
-        addPersonScoreToFitness(mSolution[row][column], mSolution[row - 1][column]);
-    else if (column != 0)
-        addPersonScoreToFitness(mSolution[row][column], mSolution[row][column - 1]);
-    else if (row + 1 != sizeOfRows)
-        addPersonScoreToFitness(mSolution[row][column], mSolution[row + 1][column]);
-    else if (column + 1 != sizeOfColumns)
-        addPersonScoreToFitness(mSolution[row][column], mSolution[row][column + 1]);
+        addPersonScoreToFitness(centerPerson, *mSolution[row - 1][column].mPerson);
+    if (column != 0)
+        addPersonScoreToFitness(centerPerson, *mSolution[row][column - 1].mPerson);
+    if (row + 1 != sizeOfRows)
+        addPersonScoreToFitness(centerPerson, *mSolution[row + 1][column].mPerson);
+    if (column + 1 != sizeOfColumns)
+        addPersonScoreToFitness(centerPerson, *mSolution[row][column + 1].mPerson);
 }
 
-void Chromosome::addPersonScoreToFitness(const Gene& , const Gene&)
+void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& person2)
 {
-
+    std::unordered_set<std::uint32_t> allSkills;
+    std::merge(person1.skill_ids.begin(), person1.skill_ids.end(),
+        person2.skill_ids.begin(), person2.skill_ids.end(), std::back_inserter(allSkills));
+    std::unordered_set<std::uint32_t> commonSkills;
+    std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
+        person2.skill_ids.begin(), person2.skill_ids.end(), std::back_inserter(commonSkills));
+    // const std::uint32_t workPotential = 
+    
 }
 
 std::uint32_t Chromosome::getFitness()

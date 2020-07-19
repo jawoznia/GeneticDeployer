@@ -22,7 +22,7 @@ public:
     void calculateFitness();
     void calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
         const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns);
-    void addPersonScoreToFitness(const Gene&, const Gene&);
+    void addPersonScoreToFitness(const Person&, const Person&);
     std::uint32_t getFitness();
 
 public:
