@@ -25,6 +25,8 @@ public:
         const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns);
     void addPersonScoreToFitness(const Person&, const Person&);
     std::uint32_t getFitness();
+    void setPerson(Gene& gene);
+    void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
 
 public:
     std::uint32_t mFitness;

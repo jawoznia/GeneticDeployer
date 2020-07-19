@@ -26,9 +26,36 @@ void Chromosome::initSolution(const data::DataHolder& data)
         for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
         {
             mSolution[row][column].mType = seats[row][column];
-            mSolution[row][column].mPerson = std::make_shared<Person>();
+            setPerson(mSolution[row][column]);
         }
     }
+    std::cout << "Solution initialized!" << std::endl;
+}
+
+void Chromosome::setPerson(Gene& gene)
+{
+    switch (gene.mType)
+    {
+        case SeatType::Developer:
+            setPerson(gene, mDevs);
+            break;
+        case SeatType::Manager:
+            setPerson(gene, mManagers);
+            break;
+        case SeatType::Unavailable:
+            gene.mPerson = nullptr;
+            break;
+    }
+}
+
+void Chromosome::setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people)
+{
+    std::uniform_int_distribution<> dis(0, people.size() - 1);
+    auto index = dis(mt);
+    auto personIter = people.begin();
+    std::advance(personIter, index);
+    people.erase(personIter);
+    gene.mPerson = std::move(*personIter);
 }
 
 void Chromosome::calculateFitness()
@@ -38,8 +65,10 @@ void Chromosome::calculateFitness()
     for (std::uint32_t row = 0; row < sizeOfRows; ++row)
     {
         const std::uint32_t sizeOfColumns = mSolution[row].size();
+        std::cout << "; max[" << sizeOfRows << "][" << sizeOfColumns << "]";
         for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
         {
+            std::cout << "; current[" << row << "][" << column << "]";
             calculatePairsScore(row, column, sizeOfRows, sizeOfColumns);
         }
     }
