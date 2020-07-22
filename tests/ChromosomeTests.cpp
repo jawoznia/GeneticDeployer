@@ -13,36 +13,60 @@ class ChromosomeFixture : public ::testing::Test {
 public:
     ChromosomeFixture() {}
 
-    std::vector<std::string> prepareStringVec()
+protected:
+    data::DataHolder createDataHolder()
     {
-        return {
-            "5",
-            "3",
-            "#####",
-            "#_##_",
-            "#MM__",
-            "10",
-            "opn", "7", "2", "java", "bpm",
-            "clstr", "5", "2", "python", "azure",
-            "opn", "8", "2", "python", "java",
-            "com_vl", "4", "3", "java", "cybersecurity", "big_data",
-            "mac", "1", "2", "nlp", "big_data",
-            "clstr", "3", "2", "azure", "c#",
-            "com_vl", "6", "2", "cybersecurity", "python",
-            "opn", "2", "3", "bpm", "python", "project_management",
-            "ble", "5", "4", "java", "c", "sql", "junit",
-            "clstr", "1", "4", "python", "c", "java", "bpm",
-            "3",
-            "opn", "2",
-            "ble", "1",
-            "mac", "5"
-          };
+        data::DataHolder holder;
+        holder.SetSeats(properInputData);
+        holder.SetDevelopers(properInputData);
+        holder.SetManagers(properInputData);
+        return holder;
     }
 
-protected:
+private:
+    const std::vector<std::string> properInputData {
+        "5",
+        "3",
+        "#####",
+        "#_##_",
+        "#MM__",
+        "10",
+        "opn", "7", "2", "java", "bpm",
+        "clstr", "5", "2", "python", "azure",
+        "opn", "8", "2", "python", "java",
+        "com_vl", "4", "3", "java", "cybersecurity", "big_data",
+        "mac", "1", "2", "nlp", "big_data",
+        "clstr", "3", "2", "azure", "c#",
+        "com_vl", "6", "2", "cybersecurity", "python",
+        "opn", "2", "3", "bpm", "python", "project_management",
+        "ble", "5", "4", "java", "c", "sql", "junit",
+        "clstr", "1", "4", "python", "c", "java", "bpm",
+        "3",
+        "opn", "2",
+        "ble", "1",
+        "mac", "5"
+    };
 };
 
-TEST_F(ChromosomeFixture, SomeTest) {
-    data::DataHolder dataHolder;
-    // Chromosome sut;
+TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
+    Chromosome sut(createDataHolder());
+    EXPECT_EQ(sut.mDevs.size(), 6);
+    EXPECT_EQ(sut.mManagers.size(), 1);
+    const auto& solution(sut.mSolution);
+
+    for (int column = 0; column < solution.size(); ++column)
+    {
+        EXPECT_EQ(solution[0][column].mPerson, nullptr);
+    }
+    EXPECT_EQ(solution[1][0].mPerson, nullptr);
+    EXPECT_EQ(solution[1][2].mPerson, nullptr);
+    EXPECT_EQ(solution[1][3].mPerson, nullptr);
+    EXPECT_EQ(solution[2][0].mPerson, nullptr);
+
+    EXPECT_NE(solution[1][1].mPerson, nullptr);
+    EXPECT_NE(solution[1][4].mPerson, nullptr);
+    EXPECT_NE(solution[2][1].mPerson, nullptr);
+    EXPECT_NE(solution[2][2].mPerson, nullptr);
+    EXPECT_NE(solution[2][3].mPerson, nullptr);
+    EXPECT_NE(solution[2][4].mPerson, nullptr);
 }
