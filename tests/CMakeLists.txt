@@ -5,6 +5,7 @@ set(This Sitzen_zie_dupen-TESTS)
 set(Sources
     DeployerTests.cpp
     some_tests.cpp
+    ChromosomeTests.cpp
 )
 
 add_executable(${This} ${Sources})

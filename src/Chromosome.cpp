@@ -126,7 +126,6 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
     const std::uint32_t bonusPotential =
         person1.company_id == person2.company_id ? person1.bonus_potential * person2.bonus_potential : 0;
     mFitness += workPotential + bonusPotential;
-
 }
 
 std::uint32_t Chromosome::getFitness()
