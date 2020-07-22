@@ -25,11 +25,9 @@ void Chromosome::initSolution(const data::DataHolder& data)
         mSolution[row].resize(sizeOfColumns);
         for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
         {
-            std::cout << "[" << row << "][" << column << "] - ";
             mSolution[row][column].mType = seats[row][column];
             setPerson(mSolution[row][column]);
         }
-        std::cout << "\n";
     }
     std::cout << "Solution initialized!" << std::endl;
 }
@@ -45,7 +43,6 @@ void Chromosome::setPerson(Gene& gene)
             setPerson(gene, mManagers);
             break;
         case SeatType::Unavailable:
-            std::cout << "Nullptr - ";
             gene.mPerson = nullptr;
             break;
     }
@@ -57,8 +54,8 @@ void Chromosome::setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& peo
     auto index = dis(mt);
     auto personIter = people.begin();
     std::advance(personIter, index);
-    people.erase(personIter);
-    gene.mPerson = std::move(*personIter);
+    gene.mPerson = *personIter;
+    personIter = people.erase(personIter);
 }
 
 void Chromosome::calculateFitness()
@@ -81,7 +78,6 @@ void Chromosome::calculatePairsScore(const std::uint32_t row, const std::uint32_
     const auto& centerPerson(mSolution[row][column].mPerson);
     if (not centerPerson)
     {
-        // std::cout << "No center person found.\n";
         return;
     }
     if (row != 0)
@@ -130,18 +126,10 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
     const std::uint32_t bonusPotential =
         person1.company_id == person2.company_id ? person1.bonus_potential * person2.bonus_potential : 0;
 
-    // std::cout << "For " << person1.company_id << " and "<< person2.company_id << " company workerers"
-    //     " workPotential is " << workPotential << " and bonusPotential is " << bonusPotential;
-    // std:: cout << ". Skills are ";
-    // for (const auto skill : person1.skill_ids) std::cout << skill << "; ";
-    // std:: cout << " and ";
-    // for (const auto skill : person2.skill_ids) std::cout << skill << "; ";
     mFitness += workPotential + bonusPotential;
-    // std:: cout << ". Fitness is now equal to " << mFitness << "\n";
 }
 
 std::uint32_t Chromosome::getFitness()
 {
     return mFitness;
 }
-
