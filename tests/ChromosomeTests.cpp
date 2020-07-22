@@ -13,17 +13,15 @@ class ChromosomeFixture : public ::testing::Test {
 public:
     ChromosomeFixture() {}
 
-protected:
-    data::DataHolder createDataHolder()
+    data::DataHolder createDataHolder(const std::vector<std::string>& data)
     {
         data::DataHolder holder;
-        holder.SetSeats(properInputData);
-        holder.SetDevelopers(properInputData);
-        holder.SetManagers(properInputData);
+        holder.SetSeats(data);
+        holder.SetDevelopers(data);
+        holder.SetManagers(data);
         return holder;
     }
 
-private:
     const std::vector<std::string> properInputData {
         "5",
         "3",
@@ -49,7 +47,7 @@ private:
 };
 
 TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
-    Chromosome sut(createDataHolder());
+    Chromosome sut(createDataHolder(properInputData));
     EXPECT_EQ(sut.mDevs.size(), 6);
     EXPECT_EQ(sut.mManagers.size(), 1);
     const auto& solution(sut.mSolution);
@@ -69,4 +67,21 @@ TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
     EXPECT_NE(solution[2][2].mPerson, nullptr);
     EXPECT_NE(solution[2][3].mPerson, nullptr);
     EXPECT_NE(solution[2][4].mPerson, nullptr);
+}
+
+TEST_F(ChromosomeFixture, ShouldHandleEmptyInput) {
+    data::DataHolder emptyHolder;
+    Chromosome sut(emptyHolder);
+    EXPECT_EQ(sut.mDevs.size(), 0);
+    EXPECT_EQ(sut.mManagers.size(), 0);
+    EXPECT_EQ(sut.mSolution.size(), 0);
+}
+
+TEST_F(ChromosomeFixture, ShouldHandleEmptyManagers) {
+    std::vector<std::string> data(properInputData.begin(), properInputData.end() - 4);
+    data.push_back("0");
+    Chromosome sut(createDataHolder(data));
+    EXPECT_EQ(sut.mDevs.size(), 0);
+    EXPECT_EQ(sut.mManagers.size(), 0);
+    EXPECT_EQ(sut.mSolution.size(), 0);
 }
