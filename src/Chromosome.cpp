@@ -50,6 +50,10 @@ void Chromosome::setPerson(Gene& gene)
 
 void Chromosome::setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people)
 {
+    if (people.size() == 0)
+    {
+        return;
+    }
     std::uniform_int_distribution<> dis(0, people.size() - 1);
     auto index = dis(mt);
     auto personIter = people.begin();

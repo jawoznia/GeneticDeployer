@@ -82,10 +82,13 @@ TEST_F(ChromosomeFixture, ShouldHandleEmptyInput) {
 }
 
 TEST_F(ChromosomeFixture, ShouldHandleEmptyManagers) {
-    std::vector<std::string> data(properInputData.begin(), properInputData.end() - 4);
+    std::uint32_t number_of_manager_elements = 7;
+    std::vector<std::string> data(properInputData.begin(), properInputData.end() - number_of_manager_elements);
     data.push_back("0");
+
     Chromosome sut(createDataHolder(data));
-    EXPECT_EQ(sut.mDevs.size(), 0);
+
+    EXPECT_EQ(sut.mDevs.size(), 6);
     EXPECT_EQ(sut.mManagers.size(), 0);
-    EXPECT_EQ(sut.mSolution.size(), 0);
+    EXPECT_EQ(sut.mSolution.size(), 3);
 }

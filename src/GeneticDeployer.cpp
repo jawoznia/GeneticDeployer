@@ -49,7 +49,6 @@ void GeneticDeployer::Calculate()
     {
         solution->calculateFitness();
     }
-    //while (shouldEnd())
 }
 
 void GeneticDeployer::InitPopulation()

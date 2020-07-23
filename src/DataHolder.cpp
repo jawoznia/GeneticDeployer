@@ -98,11 +98,17 @@ uint32_t DataHolder::insertSkill(const std::string& skill_name) {
 }
 
 void DataHolder::SetManagers(const std::vector<std::string> &words) {
-    const uint32_t size_of_devs = std::stoi(*mWords_iterator);
-    mManagers.resize(size_of_devs);
+    const uint32_t size_of_managers = std::stoi(*mWords_iterator);
+    if (size_of_managers == 0)
+    {
+        return;
+    }
+    std::cout << "managers size is " << size_of_managers << std::endl;
+    mManagers.resize(size_of_managers);
 
     std::advance(mWords_iterator, 1);
-    for (uint32_t i = 0; i < size_of_devs; ++i) {
+    std::cout << "wolololo" << std::endl;
+    for (uint32_t i = 0; i < size_of_managers; ++i) {
         mManagers.at(i) = CreateManager();
     }
 }
