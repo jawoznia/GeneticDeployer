@@ -6,8 +6,11 @@
 #include "../include/DataHolder.hpp"
 
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 
 #include <memory>
+
+MATCHER(IsDev, "") {return true;}
 
 class ChromosomeFixture : public ::testing::Test {
 public:
@@ -62,6 +65,7 @@ TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
     EXPECT_EQ(solution[2][0].mPerson, nullptr);
 
     EXPECT_NE(solution[1][1].mPerson, nullptr);
+    EXPECT_THAT(solution[1][1], IsDev());
     EXPECT_NE(solution[1][4].mPerson, nullptr);
     EXPECT_NE(solution[2][1].mPerson, nullptr);
     EXPECT_NE(solution[2][2].mPerson, nullptr);

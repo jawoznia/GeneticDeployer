@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(This Sitzen_zie_dupen)
+set(This Genetic-deployer)
 set(LIB_DIR libs)
 project(${This} C CXX)
 
@@ -10,8 +10,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 enable_testing()
 
-add_subdirectory(${LIB_DIR}/googletest)
-#add_subdirectory(src)
+add_subdirectory(${LIB_DIR}/googletest ${LIB_DIR}/googlemock)
 
 SET(HEADERS
     include/Chromosome.hpp

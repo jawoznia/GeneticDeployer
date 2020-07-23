@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(This Sitzen_zie_dupen-TESTS)
+set(This Genetic-deployer-TESTS)
 
 set(Sources
     DeployerTests.cpp
@@ -11,7 +11,8 @@ set(Sources
 add_executable(${This} ${Sources})
 target_link_libraries(${This}
     gtest_main
-    Sitzen_zie_dupen
+    gmock_main
+    Genetic-deployer
 )
 
 add_test(
