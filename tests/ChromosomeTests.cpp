@@ -10,7 +10,9 @@
 
 #include <memory>
 
-MATCHER(IsDev, "") {return true;}
+MATCHER(IsDev, "") { return arg.mPerson != nullptr and arg.mType == SeatType::Developer; }
+MATCHER(IsManager, "") { return arg.mPerson != nullptr and arg.mType == SeatType::Manager; }
+MATCHER(IsUnavailable, "") { return arg.mPerson == nullptr and arg.mType == SeatType::Unavailable; }
 
 class ChromosomeFixture : public ::testing::Test {
 public:
@@ -57,20 +59,19 @@ TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
 
     for (int column = 0; column < solution.size(); ++column)
     {
-        EXPECT_EQ(solution[0][column].mPerson, nullptr);
+        EXPECT_THAT(solution[0][column], IsUnavailable());
     }
-    EXPECT_EQ(solution[1][0].mPerson, nullptr);
-    EXPECT_EQ(solution[1][2].mPerson, nullptr);
-    EXPECT_EQ(solution[1][3].mPerson, nullptr);
-    EXPECT_EQ(solution[2][0].mPerson, nullptr);
+    EXPECT_THAT(solution[1][0], IsUnavailable());
+    EXPECT_THAT(solution[1][2], IsUnavailable());
+    EXPECT_THAT(solution[1][3], IsUnavailable());
+    EXPECT_THAT(solution[2][0], IsUnavailable());
 
-    EXPECT_NE(solution[1][1].mPerson, nullptr);
     EXPECT_THAT(solution[1][1], IsDev());
-    EXPECT_NE(solution[1][4].mPerson, nullptr);
-    EXPECT_NE(solution[2][1].mPerson, nullptr);
-    EXPECT_NE(solution[2][2].mPerson, nullptr);
-    EXPECT_NE(solution[2][3].mPerson, nullptr);
-    EXPECT_NE(solution[2][4].mPerson, nullptr);
+    EXPECT_THAT(solution[1][4], IsDev());
+    EXPECT_THAT(solution[2][1], IsManager());
+    EXPECT_THAT(solution[2][2], IsManager());
+    EXPECT_THAT(solution[2][3], IsDev());
+    EXPECT_THAT(solution[2][4], IsDev());
 }
 
 TEST_F(ChromosomeFixture, ShouldHandleEmptyInput) {
