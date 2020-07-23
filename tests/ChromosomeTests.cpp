@@ -92,3 +92,31 @@ TEST_F(ChromosomeFixture, ShouldHandleEmptyManagers) {
     EXPECT_EQ(sut.mManagers.size(), 0);
     EXPECT_EQ(sut.mSolution.size(), 3);
 }
+
+TEST_F(ChromosomeFixture, ShouldHandleEmptyDevelopers) {
+    std::uint32_t number_of_seat_strings = 5;
+    std::uint32_t index_of_number_of_managers = 62;
+    std::vector<std::string> data(properInputData.begin(), properInputData.begin() + number_of_seat_strings);
+    data.push_back("0");
+    data.insert(data.end(), properInputData.begin() + index_of_number_of_managers, properInputData.end());
+
+    Chromosome sut(createDataHolder(data));
+
+    EXPECT_EQ(sut.mDevs.size(), 0);
+    EXPECT_EQ(sut.mManagers.size(), 1);
+    EXPECT_EQ(sut.mSolution.size(), 3);
+}
+
+TEST_F(ChromosomeFixture, ShouldHandleEmptySeats) {
+    std::uint32_t index_of_last_seat_row = 5;
+    std::vector<std::string> data;
+    data.push_back("0");
+    data.push_back("0");
+    data.insert(data.end(), properInputData.begin() + index_of_last_seat_row, properInputData.end());
+
+    Chromosome sut(createDataHolder(data));
+
+    EXPECT_EQ(sut.mDevs.size(), 10);
+    EXPECT_EQ(sut.mManagers.size(), 3);
+    EXPECT_EQ(sut.mSolution.size(), 0);
+}
