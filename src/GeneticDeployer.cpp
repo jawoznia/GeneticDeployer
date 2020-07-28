@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <limits>
 #include <random>
 
 GeneticDeployer::GeneticDeployer()
@@ -52,7 +53,8 @@ void GeneticDeployer::calculate()
     initPopulation();
     for (auto& solution : mSolutions)
     {
-        
+        const auto idsForCrossover = tournamentSelection();
+
 
         solution->calculateFitness();
     }
@@ -74,8 +76,26 @@ std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
     for (auto& winningId : winningIds)
     {
         const static std::uint32_t sizeOfSingleTournament = 5;
-        std::vector<std::uint32_t> ids;
-        
+        std::vector<std::uint32_t> ids(sizeOfSingleTournament);
+        for (auto& id : ids)
+        {
+            id = dis(mMt);
+        }
+        winningId = getMostFitnessSolutionId(ids);
     }
+    return winningIds;
+}
 
+std::uint32_t GeneticDeployer::getMostFitnessSolutionId(const std::vector<std::uint32_t>& ids)
+{
+    std::uint32_t maxVal = std::numeric_limits<std::uint32_t>::min();
+    std::uint32_t bestId = 0;
+    for (const auto id : ids)
+    {
+        if (maxVal < mSolutions[id]->getFitness())
+        {
+            bestId = id;
+        }
+    }
+    return bestId;
 }

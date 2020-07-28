@@ -24,6 +24,7 @@ private:
     void initPopulation();
     void calculate();
     std::vector<std::uint32_t> tournamentSelection();
+    std::uint32_t getMostFitnessSolutionId(const std::vector<std::uint32_t>&);
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
