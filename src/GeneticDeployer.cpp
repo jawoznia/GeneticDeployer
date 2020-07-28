@@ -2,21 +2,26 @@
 // Created by Jan Woźniak on 21-Mar-20.
 //
 
-#include <iostream>
-
 #include "../include/GeneticDeployer.hpp"
 
-GeneticDeployer::GeneticDeployer() : mFileReader(std::make_unique<data::FileReader>("../data/a_solar.txt")) {
+#include <algorithm>
+#include <iostream>
+#include <random>
+
+GeneticDeployer::GeneticDeployer()
+    : mFileReader(std::make_unique<data::FileReader>("../data/a_solar.txt"))
+    , mMt(mRd())
+{
 }
 
-void GeneticDeployer::Start() {
+void GeneticDeployer::start() {
     std::cout << "Starting data loading.\n";
 
     mDataHolder = mFileReader->LoadData();
     
     std::cout << "Data loaded. Starting calculation...\n";
 
-    Calculate();
+    calculate();
 }
 
 /* 
@@ -42,20 +47,35 @@ void GeneticDeployer::Start() {
  *                  -> think about some way to swap data between them.
  */
 
-void GeneticDeployer::Calculate()
+void GeneticDeployer::calculate()
 {
-    InitPopulation();
+    initPopulation();
     for (auto& solution : mSolutions)
     {
+        
+
         solution->calculateFitness();
     }
 }
 
-void GeneticDeployer::InitPopulation()
+void GeneticDeployer::initPopulation()
 {
     mSolutions.resize(mSizeOfPopulation);
     for (auto& solution : mSolutions)
     {
         solution = std::make_unique<Chromosome>(*mDataHolder);
     }    
+}
+
+std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
+{
+    std::vector<std::uint32_t> winningIds(mNumberOfSelections);
+    std::uniform_int_distribution<> dis(0, mSolutions.size() - 1);
+    for (auto& winningId : winningIds)
+    {
+        const static std::uint32_t sizeOfSingleTournament = 5;
+        std::vector<std::uint32_t> ids;
+        
+    }
+
 }

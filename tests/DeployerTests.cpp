@@ -17,5 +17,5 @@ protected:
 
 TEST_F(DeployerFixture, SomeTest) {
     std::cout << "Starting Deployer Test.\n";
-    mSut->Start();
+    mSut->start();
 }

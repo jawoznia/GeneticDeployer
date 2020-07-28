@@ -16,13 +16,14 @@ class GeneticDeployer {
 public:
     GeneticDeployer();
 
-    void Start();
+    void start();
 
 private:
-    bool ShouldEnd();
+    bool shouldEnd();
 
-    void InitPopulation();
-    void Calculate();
+    void initPopulation();
+    void calculate();
+    std::vector<std::uint32_t> tournamentSelection();
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
@@ -30,6 +31,9 @@ private:
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
 
     std::uint32_t mSizeOfPopulation = 20;
+    std::uint32_t mNumberOfSelections = 10;
+    std::random_device mRd;
+    std::mt19937 mMt;
 };
 
 
