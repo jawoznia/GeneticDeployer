@@ -15,7 +15,7 @@ protected:
     std::unique_ptr<GeneticDeployer> mSut;
 };
 
-TEST_F(DeployerFixture, SomeTest) {
+TEST_F(DeployerFixture, ShouldCalculateFitness) {
     std::cout << "Starting Deployer Test.\n";
     mSut->start();
 }

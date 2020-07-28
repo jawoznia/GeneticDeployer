@@ -25,11 +25,14 @@ private:
     void calculate();
     std::vector<std::uint32_t> tournamentSelection();
     std::uint32_t getMostFitnessSolutionId(const std::vector<std::uint32_t>&);
+    void crossover(const std::vector<std::uint32_t>&);
+    void createDescendatsFor(const Chromosome&, const Chromosome&);
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
+    std::vector<std::unique_ptr<Chromosome>> mCrossedSolutions;
 
     std::uint32_t mSizeOfPopulation = 20;
     std::uint32_t mNumberOfSelections = 10;

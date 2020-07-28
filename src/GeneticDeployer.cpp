@@ -51,13 +51,8 @@ void GeneticDeployer::start() {
 void GeneticDeployer::calculate()
 {
     initPopulation();
-    for (auto& solution : mSolutions)
-    {
-        const auto idsForCrossover = tournamentSelection();
-
-
-        solution->calculateFitness();
-    }
+    const auto idsForCrossover = tournamentSelection();
+    crossover(idsForCrossover);
 }
 
 void GeneticDeployer::initPopulation()
@@ -98,4 +93,17 @@ std::uint32_t GeneticDeployer::getMostFitnessSolutionId(const std::vector<std::u
         }
     }
     return bestId;
+}
+
+void GeneticDeployer::crossover(const std::vector<std::uint32_t>& ids)
+{
+    for (std::uint32_t i = 0; i < mNumberOfSelections; i += 2)
+    {
+        createDescendatsFor(*mSolutions[i], *mSolutions[i + 1]);
+    }
+}
+
+void GeneticDeployer::createDescendatsFor(const Chromosome&, const Chromosome&)
+{
+    
 }
