@@ -14,10 +14,21 @@ enum class SeatType {
     Unavailable = 2
 };
 
+static std::uint32_t id{0};
+
 struct Person {
-    uint32_t company_id;
-    uint32_t bonus_potential;
-    std::vector<uint32_t> skill_ids;
+    Person() : person_id(id++)
+    {
+    }
+
+    bool operator ==(const Person& p) {
+        return person_id == p.person_id;
+    }
+
+    const std::uint32_t person_id;
+    std::uint32_t company_id;
+    std::uint32_t bonus_potential;
+    std::vector<std::uint32_t> skill_ids;
 };
 
 #endif //GENETIC_DEPLOYER_DATASTRUCTURES_HPP
