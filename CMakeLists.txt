@@ -18,6 +18,8 @@ SET(HEADERS
     include/FileReader.hpp
     include/GeneticDeployer.hpp
     include/DataStructures.hpp
+
+    include/helpers/RandomNumberGenerator.hpp
 )
 set(SOURCES
     src/Chromosome.cpp

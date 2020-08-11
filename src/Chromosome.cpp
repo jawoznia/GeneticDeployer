@@ -4,6 +4,10 @@
 #include <iostream>
 #include <unordered_set>
 
+Chromosome::Chromosome() = default;
+
+Chromosome::~Chromosome() = default;
+
 Chromosome::Chromosome(const data::DataHolder& data)
     : mt(rd())
 {
@@ -136,4 +140,10 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
 std::uint32_t Chromosome::getFitness()
 {
     return mFitness;
+}
+
+std::unique_ptr<Chromosome> Chromosome::getDescendant(const Chromosome& parent1, const Chromosome& parent2)
+{
+    auto descendant(std::make_unique<Chromosome>());
+    descendant->mDevs(parent1.)
 }

@@ -19,6 +19,13 @@ class Chromosome
 {
 public:
     explicit Chromosome(const data::DataHolder&);
+    Chromosome(const Chromosome& parent1, const Chromosome& parent2);
+    Chromosome(const Chromosome& other) = delete;
+    Chromosome(Chromosome&& other) = delete;
+    Chromosome& operator=(const Chromosome& other) = delete;
+    Chromosome& operator=(Chromosome&& other) = delete;
+    ~Chromosome();
+
     void initSolution(const data::DataHolder&);
     void calculateFitness();
     void calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
@@ -27,6 +34,11 @@ public:
     std::uint32_t getFitness();
     void setPerson(Gene& gene);
     void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
+
+    static std::unique_ptr<Chromosome> getDescendant(const Chromosome&, const Chromosome&);
+
+private:
+    Chromosome();
 
 public:
     std::uint32_t mFitness;
