@@ -109,5 +109,5 @@ void GeneticDeployer::createDescendatsFor(const Chromosome& parent1, const Chrom
     const std::uint32_t startIndex(disStart(mMt));
     std::uniform_int_distribution<> disFinish(startIndex, parent1.mSolution.size() - 1);
     const std::uint32_t finishIndex(disFinish(mMt));
-    std::unique_ptr<Chromosome> descendant
+    std::unique_ptr<Chromosome> descendant(Chromosome::getDescendant(parent1, parent2));
 }

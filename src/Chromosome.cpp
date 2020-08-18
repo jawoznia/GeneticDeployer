@@ -18,6 +18,35 @@ Chromosome::Chromosome(const data::DataHolder& data)
     calculateFitness();
 }
 
+Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
+{
+    const auto& solution(parent1.mSolution);
+    const std::uint32_t sizeOfRows = solution.size();
+    mSolution.resize(sizeOfRows);
+    for (std::uint32_t row = 0; row < sizeOfRows; ++row)
+    {
+        const std::uint32_t sizeOfColumns = solution[row].size();
+        mSolution[row].resize(sizeOfColumns);
+        for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
+        {
+            mSolution[row][column].mType = solution[row][column].mType;
+            mSolution[row][column].mPerson = nullptr;
+            if (mSolution[row][column].mType == SeatType::Developer)
+            {
+                mDevs.push_back(solution[row][column].mPerson);
+            }
+            else if (mSolution[row][column].mType == SeatType::Manager)
+            {
+                mManagers.push_back(solution[row][column].mPerson);
+            }
+        }
+    }
+    mDevs.reserve(mDevs.size() + parent1.mDevs.size());
+    mDevs.insert(mDevs.end(), parent1.mDevs.begin(), parent1.mDevs.end());
+    mManagers.reserve(mManagers.size() + parent1.mManagers.size());
+    mManagers.insert(mManagers.end(), parent1.mManagers.begin(), parent1.mManagers.end());
+}
+
 void Chromosome::initSolution(const data::DataHolder& data)
 {
     const auto& seats(data.getSeats());
@@ -144,6 +173,6 @@ std::uint32_t Chromosome::getFitness()
 
 std::unique_ptr<Chromosome> Chromosome::getDescendant(const Chromosome& parent1, const Chromosome& parent2)
 {
-    auto descendant(std::make_unique<Chromosome>());
-    descendant->mDevs(parent1.)
+    auto descendant(std::make_unique<Chromosome>(parent1, parent2));
+    return std::move(descendant);
 }
