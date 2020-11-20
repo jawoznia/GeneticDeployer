@@ -51,7 +51,7 @@ void GeneticDeployer::start() {
 void GeneticDeployer::calculate()
 {
     initPopulation();
-    crossover(idsForCrossover);
+    crossover();
 }
 
 void GeneticDeployer::initPopulation()
@@ -112,10 +112,4 @@ void GeneticDeployer::createDescendatsFor(const Chromosome& parent1, const Chrom
     std::uniform_int_distribution<> disFinish(startIndex, parent1.mSolution.size() - 1);
     const std::uint32_t finishIndex(disFinish(mMt));
     std::unique_ptr<Chromosome> descendant(Chromosome::getDescendant(parent1, parent2));
-
-    // Ok I have start and finnish indexes.
-    // Now I need to:
-    // 1. copy from one parent range between those indexes
-    // 2. find from second parent those managers/developers that were not used in here
-    // 3. create descendant with range from first one in place and people from second one filled in free seats.
 }

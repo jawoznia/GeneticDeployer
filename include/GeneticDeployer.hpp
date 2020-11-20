@@ -25,7 +25,7 @@ private:
     void calculate();
     std::vector<std::uint32_t> tournamentSelection();
     std::uint32_t getMostFitnessSolutionId(const std::vector<std::uint32_t>&);
-    void crossover(const std::vector<std::uint32_t>&);
+    void crossover();
     void createDescendatsFor(const Chromosome&, const Chromosome&);
 
 private:

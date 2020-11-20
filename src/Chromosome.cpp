@@ -187,4 +187,14 @@ void Chromosome::doCrossover(const Chromosome& parent1, const Chromosome& parent
     auto lowerIndex = lowerDis(mt);
     std::uniform_int_distribution<> upperDis(lowerIndex, sizeOfRows);
     auto upperIndex = upperDis(mt);
+
+    // Ok I have start and finnish indexes.
+    // Now I need to:
+    // 1. copy from one parent range between those indexes
+    // 2. find from second parent those managers/developers that were not used in here
+    // 3. create descendant with range from first one in place and people from second one filled in free seats.
+
+    // Writing it realy stupid to just move on
+    //
+    auto firstParentGenes()
 }
