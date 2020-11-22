@@ -146,7 +146,7 @@ std::uint32_t Chromosome::getFitness()
 
 Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
 {
-    const auto& solution(parent1.mSolution);
+/*    const auto& solution(parent1.mSolution);
     const std::uint32_t sizeOfRows = solution.size();
     mSolution.resize(sizeOfRows);
     for (std::uint32_t row = 0; row < sizeOfRows; ++row)
@@ -171,25 +171,32 @@ Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
     mDevs.insert(mDevs.end(), parent1.mDevs.begin(), parent1.mDevs.end());
     mManagers.reserve(mManagers.size() + parent1.mManagers.size());
     mManagers.insert(mManagers.end(), parent1.mManagers.begin(), parent1.mManagers.end());
-
-    doCrossover(parent1, parent2);
+*/
+    mSolution = parent1.mSolution;
+    mDevs = parent1.mDevs;
+    mManagers = parent1.mManagers;
+    doCrossover(parent2);
 }
 
 // Will make crossover using one random gene as an pivot.
-void Chromosome::doCrossover(const Chromosome& parent1, const Chromosome& parent2)
+void Chromosome::doCrossover(const Chromosome& parent2)
 {
-    std::uint32_t sizeOfRows = parent1.mSolution.size();
-    std::uint32_t sizeOfColumns = parent1.mSolution[0].size(); 
-    std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
-    std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
-    std::uint32_t rowIndex = rowDis(mt);
-    std::uint32_t columnIndex = columnDis(mt);
+    std::uint32_t rowIndex = getRandomRow();
+    std::uint32_t columnIndex = getRandomColumn();
 
-    for (std::uint32_t row = 0; row <= rowIndex; ++row) {
-        std::uint32_t maxColumn = row == rowIndex ? columnIndex : sizeOfColumns - 1;
-        for (std::uint32_t column = 0; column <= maxColumn; ++column) {
-            std::cout << "Row " << row << ": column " << column << "\n";
-            mSolution[row][column] = parent1.mSolution[row][column]; 
+    for (std::uint32_t row = rowIndex; row < mSolution.size(); ++row) {
+        for (std::uint32_t column = columnIndex; column < mSolution[0].size(); ++column) {
+            if (isPersonFree(parent2.mSolution[row][column].mPerson)) {
+                // insertPerson()parent2.mSolution[row][column])
+            } else {
+                // insertPerson(mDevs[0]);
+            }
+            /*
+             *  if (find(person in mDevs or mManagers))
+             *    assign Person to this place and delete it from mDevs/mManagers
+             *  else
+             *    assign first left person to that place
+             * */
         }
     }
 
@@ -202,4 +209,21 @@ void Chromosome::doCrossover(const Chromosome& parent1, const Chromosome& parent
     //      b) if person is already sitting just put there random person (but this can cause that next seat could be left without a person
     //          as we would just take one that was sitting there in parent2. So I'm not sure if this would be a great idea as descendants would be
     //          almost mutaded in time of crossover.
+}
+
+std::uint32_t Chromosome::getRandomColumn() const {
+    std::uint32_t sizeOfColumns = mSolution[0].size(); 
+    std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
+    return columnDis(mt);
+}
+
+std::uint32_t Chromosome::getRandomRow() const {
+    std::uint32_t sizeOfRows = mSolution.size(); 
+    std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
+    return rowDis(mt);
+}
+
+bool Chromosome::isPersonFree(const std::shared_ptr<Person> person) const {
+    return std::find(mDevs.begin(), mDevs.end(), person) != mDevs.end() or
+        std::find(mManagers.begin(), mManagers.end(), person) != mManagers.end();
 }

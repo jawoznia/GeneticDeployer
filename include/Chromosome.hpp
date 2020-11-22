@@ -37,7 +37,10 @@ public:
 
 private:
     Chromosome();
-    void doCrossover(const Chromosome&, const Chromosome&);
+    void doCrossover(const Chromosome&);
+    std::uint32_t getRandomColumn() const;
+    std::uint32_t getRandomRow() const;
+    bool isPersonFree(const std::shared_ptr<Person>) const;
 
 public:
     std::uint32_t mFitness;
