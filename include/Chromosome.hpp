@@ -41,6 +41,7 @@ private:
     std::uint32_t getRandomColumn() const;
     std::uint32_t getRandomRow() const;
     bool isPersonFree(const std::shared_ptr<Person>) const;
+    void insertPerson(const std::shared_ptr<Person>);
 
 public:
     std::uint32_t mFitness;

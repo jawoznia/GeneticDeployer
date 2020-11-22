@@ -186,11 +186,10 @@ void Chromosome::doCrossover(const Chromosome& parent2)
 
     for (std::uint32_t row = rowIndex; row < mSolution.size(); ++row) {
         for (std::uint32_t column = columnIndex; column < mSolution[0].size(); ++column) {
-            if (isPersonFree(parent2.mSolution[row][column].mPerson)) {
-                // insertPerson()parent2.mSolution[row][column])
-            } else {
-                // insertPerson(mDevs[0]);
+            if (parent2.mSolution[row][column].mType == SeatType::Unavailable) {
+                continue;
             }
+            insertPerson(parent2.mSolution[row][column].mPerson);
             /*
              *  if (find(person in mDevs or mManagers))
              *    assign Person to this place and delete it from mDevs/mManagers
@@ -211,6 +210,15 @@ void Chromosome::doCrossover(const Chromosome& parent2)
     //          almost mutaded in time of crossover.
 }
 
+void Chromosome::insertPerson(const std::shared_ptr<Person> person) {
+    if (isPersonFree(person)) {
+        // insertPerson()parent2.mSolution[row][column])
+    } else {
+        // insertPerson(mDevs[0]);
+    }
+    
+}
+
 std::uint32_t Chromosome::getRandomColumn() const {
     std::uint32_t sizeOfColumns = mSolution[0].size(); 
     std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
@@ -227,3 +235,4 @@ bool Chromosome::isPersonFree(const std::shared_ptr<Person> person) const {
     return std::find(mDevs.begin(), mDevs.end(), person) != mDevs.end() or
         std::find(mManagers.begin(), mManagers.end(), person) != mManagers.end();
 }
+
