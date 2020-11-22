@@ -107,9 +107,9 @@ void GeneticDeployer::crossover()
 
 void GeneticDeployer::createDescendatsFor(const Chromosome& parent1, const Chromosome& parent2)
 {
-    std::uniform_int_distribution<> disStart(0, parent1.mSolution.size() - 1);
+   /* std::uniform_int_distribution<> disStart(0, parent1.mSolution.size() - 1);
     const std::uint32_t startIndex(disStart(mMt));
     std::uniform_int_distribution<> disFinish(startIndex, parent1.mSolution.size() - 1);
-    const std::uint32_t finishIndex(disFinish(mMt));
-    std::unique_ptr<Chromosome> descendant(Chromosome::getDescendant(parent1, parent2));
+    const std::uint32_t finishIndex(disFinish(mMt));*/
+    auto descendant(std::make_unique<Chromosome>(parent1, parent2));
 }

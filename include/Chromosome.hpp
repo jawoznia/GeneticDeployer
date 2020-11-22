@@ -35,11 +35,9 @@ public:
     void setPerson(Gene& gene);
     void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
 
-    static std::unique_ptr<Chromosome> getDescendant(const Chromosome&, const Chromosome&);
-
 private:
     Chromosome();
-    static void doCrossover(const Chromosome&, const Chromosome&);
+    void doCrossover(const Chromosome&, const Chromosome&);
 
 public:
     std::uint32_t mFitness;

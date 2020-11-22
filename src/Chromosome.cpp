@@ -144,13 +144,6 @@ std::uint32_t Chromosome::getFitness()
     return mFitness;
 }
 
-std::unique_ptr<Chromosome> Chromosome::getDescendant(const Chromosome& parent1, const Chromosome& parent2)
-{
-    auto descendant(std::make_unique<Chromosome>(parent1, parent2));
-    doCrossover(parent1, parent2);
-    return std::move(descendant);
-}
-
 Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
 {
     const auto& solution(parent1.mSolution);
@@ -178,23 +171,35 @@ Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
     mDevs.insert(mDevs.end(), parent1.mDevs.begin(), parent1.mDevs.end());
     mManagers.reserve(mManagers.size() + parent1.mManagers.size());
     mManagers.insert(mManagers.end(), parent1.mManagers.begin(), parent1.mManagers.end());
+
+    doCrossover(parent1, parent2);
 }
 
+// Will make crossover using one random gene as an pivot.
 void Chromosome::doCrossover(const Chromosome& parent1, const Chromosome& parent2)
 {
     std::uint32_t sizeOfRows = parent1.mSolution.size();
-    std::uniform_int_distribution<> lowerDis(0, sizeOfRows);
-    auto lowerIndex = lowerDis(mt);
-    std::uniform_int_distribution<> upperDis(lowerIndex, sizeOfRows);
-    auto upperIndex = upperDis(mt);
+    std::uint32_t sizeOfColumns = parent1.mSolution[0].size(); 
+    std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
+    std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
+    std::uint32_t rowIndex = rowDis(mt);
+    std::uint32_t columnIndex = columnDis(mt);
 
-    // Ok I have start and finnish indexes.
-    // Now I need to:
-    // 1. copy from one parent range between those indexes
-    // 2. find from second parent those managers/developers that were not used in here
-    // 3. create descendant with range from first one in place and people from second one filled in free seats.
+    for (std::uint32_t row = 0; row <= rowIndex; ++row) {
+        std::uint32_t maxColumn = row == rowIndex ? columnIndex : sizeOfColumns - 1;
+        for (std::uint32_t column = 0; column <= maxColumn; ++column) {
+            std::cout << "Row " << row << ": column " << column << "\n";
+            mSolution[row][column] = parent1.mSolution[row][column]; 
+        }
+    }
 
-    // Writing it realy stupid to just move on
-    //
-    auto firstParentGenes()
+    // Now we need to fill remaing seats with basing on solution from second parent.
+    // It could be done for example:
+    // 1. Fill mDevs and mManagers to get info about which people are free to be seated.
+    // 2. Iterate over remaining seats and if parent2 has there unused dev or manager then you are free to sit there this person.
+    //    If this person is already taken we can do it in two ways:
+    //      a) iterate further filling seats with people that are not taken. Then come back and for every free seat add random person
+    //      b) if person is already sitting just put there random person (but this can cause that next seat could be left without a person
+    //          as we would just take one that was sitting there in parent2. So I'm not sure if this would be a great idea as descendants would be
+    //          almost mutaded in time of crossover.
 }
