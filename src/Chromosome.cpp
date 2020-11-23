@@ -189,7 +189,8 @@ void Chromosome::doCrossover(const Chromosome& parent2)
             if (parent2.mSolution[row][column].mType == SeatType::Unavailable) {
                 continue;
             }
-            insertPerson(parent2.mSolution[row][column].mPerson);
+            std::cout << "Inserting in [" << row << "][" << column << "]\n";
+            insertPerson(parent2.mSolution[row][column], row, column);
             /*
              *  if (find(person in mDevs or mManagers))
              *    assign Person to this place and delete it from mDevs/mManagers
@@ -210,23 +211,43 @@ void Chromosome::doCrossover(const Chromosome& parent2)
     //          almost mutaded in time of crossover.
 }
 
-void Chromosome::insertPerson(const std::shared_ptr<Person> person) {
-    if (isPersonFree(person)) {
-        // insertPerson()parent2.mSolution[row][column])
-    } else {
-        // insertPerson(mDevs[0]);
+void Chromosome::insertPerson(const Gene& gene, std::uint32_t row, std::uint32_t column) {
+    if (gene.mType == SeatType::Manager) {
+        addToContainer(mManagers, gene.mPerson, row, column);
     }
-    
+    else if (gene.mType == SeatType::Developer) {
+        addToContainer(mDevs, gene.mPerson, row, column);
+    }
+}
+
+// 23.11.20 22:55 -> I think that we had two managers assigned from first parent.
+// Then 
+void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
+        std::shared_ptr<Person> person, std::uint32_t row, std::uint32_t column) {
+    auto foundPerson = std::find(people.begin(), people.end(), person);
+    std::cout << "Size of peoplee " << people.size() << "\n";
+    if (foundPerson != people.end()) {
+        const auto& buffer{mSolution[row][column].mPerson};
+        mSolution[row][column].mPerson = person;
+        people.erase(foundPerson);
+        people.push_back(buffer);
+    } else {
+        const auto& buffer{mSolution[row][column].mPerson};
+        mSolution[row][column].mPerson = people[0];
+        people.erase(people.begin());
+        people.push_back(buffer);
+    }
+
 }
 
 std::uint32_t Chromosome::getRandomColumn() const {
-    std::uint32_t sizeOfColumns = mSolution[0].size(); 
+    std::uint32_t sizeOfColumns = mSolution[0].size();
     std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
     return columnDis(mt);
 }
 
 std::uint32_t Chromosome::getRandomRow() const {
-    std::uint32_t sizeOfRows = mSolution.size(); 
+    std::uint32_t sizeOfRows = mSolution.size();
     std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
     return rowDis(mt);
 }
