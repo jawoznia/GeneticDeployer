@@ -40,7 +40,6 @@ private:
     void doCrossover(const Chromosome&);
     std::uint32_t getRandomColumn() const;
     std::uint32_t getRandomRow() const;
-    bool isPersonFree(const std::shared_ptr<Person>) const;
     void insertPerson(const Gene&, std::uint32_t, std::uint32_t);
     void addToContainer(std::vector<std::shared_ptr<Person>>&, std::shared_ptr<Person>, std::uint32_t, std::uint32_t);
 

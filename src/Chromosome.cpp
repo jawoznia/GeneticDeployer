@@ -146,32 +146,6 @@ std::uint32_t Chromosome::getFitness()
 
 Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
 {
-/*    const auto& solution(parent1.mSolution);
-    const std::uint32_t sizeOfRows = solution.size();
-    mSolution.resize(sizeOfRows);
-    for (std::uint32_t row = 0; row < sizeOfRows; ++row)
-    {
-        const std::uint32_t sizeOfColumns = solution[row].size();
-        mSolution[row].resize(sizeOfColumns);
-        for (std::uint32_t column = 0; column < sizeOfColumns; ++column)
-        {
-            mSolution[row][column].mType = solution[row][column].mType;
-            mSolution[row][column].mPerson = nullptr;
-            if (mSolution[row][column].mType == SeatType::Developer)
-            {
-                mDevs.push_back(solution[row][column].mPerson);
-            }
-            else if (mSolution[row][column].mType == SeatType::Manager)
-            {
-                mManagers.push_back(solution[row][column].mPerson);
-            }
-        }
-    }
-    mDevs.reserve(mDevs.size() + parent1.mDevs.size());
-    mDevs.insert(mDevs.end(), parent1.mDevs.begin(), parent1.mDevs.end());
-    mManagers.reserve(mManagers.size() + parent1.mManagers.size());
-    mManagers.insert(mManagers.end(), parent1.mManagers.begin(), parent1.mManagers.end());
-*/
     mSolution = parent1.mSolution;
     mDevs = parent1.mDevs;
     mManagers = parent1.mManagers;
@@ -189,26 +163,9 @@ void Chromosome::doCrossover(const Chromosome& parent2)
             if (parent2.mSolution[row][column].mType == SeatType::Unavailable) {
                 continue;
             }
-            std::cout << "Inserting in [" << row << "][" << column << "]\n";
             insertPerson(parent2.mSolution[row][column], row, column);
-            /*
-             *  if (find(person in mDevs or mManagers))
-             *    assign Person to this place and delete it from mDevs/mManagers
-             *  else
-             *    assign first left person to that place
-             * */
         }
     }
-
-    // Now we need to fill remaing seats with basing on solution from second parent.
-    // It could be done for example:
-    // 1. Fill mDevs and mManagers to get info about which people are free to be seated.
-    // 2. Iterate over remaining seats and if parent2 has there unused dev or manager then you are free to sit there this person.
-    //    If this person is already taken we can do it in two ways:
-    //      a) iterate further filling seats with people that are not taken. Then come back and for every free seat add random person
-    //      b) if person is already sitting just put there random person (but this can cause that next seat could be left without a person
-    //          as we would just take one that was sitting there in parent2. So I'm not sure if this would be a great idea as descendants would be
-    //          almost mutaded in time of crossover.
 }
 
 void Chromosome::insertPerson(const Gene& gene, std::uint32_t row, std::uint32_t column) {
@@ -220,24 +177,13 @@ void Chromosome::insertPerson(const Gene& gene, std::uint32_t row, std::uint32_t
     }
 }
 
-// 23.11.20 22:55 -> I think that we had two managers assigned from first parent.
-// Then 
 void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
         std::shared_ptr<Person> person, std::uint32_t row, std::uint32_t column) {
-    auto foundPerson = std::find(people.begin(), people.end(), person);
-    std::cout << "Size of peoplee " << people.size() << "\n";
-    if (foundPerson != people.end()) {
-        const auto& buffer{mSolution[row][column].mPerson};
-        mSolution[row][column].mPerson = person;
-        people.erase(foundPerson);
-        people.push_back(buffer);
+    if (std::find(people.begin(), people.end(), person) != people.end()) {
+        std::swap(mSolution[row][column].mPerson, person);
     } else {
-        const auto& buffer{mSolution[row][column].mPerson};
-        mSolution[row][column].mPerson = people[0];
-        people.erase(people.begin());
-        people.push_back(buffer);
+        std::swap(mSolution[row][column].mPerson, people[0]);
     }
-
 }
 
 std::uint32_t Chromosome::getRandomColumn() const {
@@ -250,10 +196,5 @@ std::uint32_t Chromosome::getRandomRow() const {
     std::uint32_t sizeOfRows = mSolution.size();
     std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
     return rowDis(mt);
-}
-
-bool Chromosome::isPersonFree(const std::shared_ptr<Person> person) const {
-    return std::find(mDevs.begin(), mDevs.end(), person) != mDevs.end() or
-        std::find(mManagers.begin(), mManagers.end(), person) != mManagers.end();
 }
 
