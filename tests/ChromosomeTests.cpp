@@ -4,6 +4,7 @@
 
 #include "../include/Chromosome.hpp"
 #include "../include/DataHolder.hpp"
+#include "matchers/ChromosomeMatcher.cpp"
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
@@ -121,3 +122,19 @@ TEST_F(ChromosomeFixture, ShouldHandleEmptySeats) {
     EXPECT_EQ(sut.mManagers.size(), 3);
     EXPECT_EQ(sut.mSolution.size(), 0);
 }
+
+TEST_F(ChromosomeFixture, DescendantShouldHaveEveryPerson) {
+    Chromosome parent1(createDataHolder(properInputData));
+    Chromosome parent2(createDataHolder(properInputData));
+    EXPECT_EQ(parent1.mDevs.size(), 6);
+    EXPECT_EQ(parent1.mManagers.size(), 1);
+    EXPECT_EQ(parent2.mDevs.size(), 6);
+    EXPECT_EQ(parent2.mManagers.size(), 1);
+
+    Chromosome descendant(parent1, parent2);
+    EXPECT_EQ(descendant.mDevs.size(), 6);
+    EXPECT_EQ(descendant.mManagers.size(), 1);
+    matchers::ChromosomeMatcher descendantMatcher(parent1, descendant);
+    descendantMatcher.checkIfEveryPersonIsIncluded();
+}
+

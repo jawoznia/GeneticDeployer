@@ -6,6 +6,8 @@ set(Sources
     DeployerTests.cpp
     some_tests.cpp
     ChromosomeTests.cpp
+
+    matchers/ChromosomeMatcher.cpp
 )
 
 add_executable(${This} ${Sources})
