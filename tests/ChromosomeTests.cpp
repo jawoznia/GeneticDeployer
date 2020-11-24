@@ -134,7 +134,7 @@ TEST_F(ChromosomeFixture, DescendantShouldHaveEveryPerson) {
     Chromosome descendant(parent1, parent2);
     EXPECT_EQ(descendant.mDevs.size(), 6);
     EXPECT_EQ(descendant.mManagers.size(), 1);
-    matchers::ChromosomeMatcher descendantMatcher(parent1, descendant);
-    descendantMatcher.checkIfEveryPersonIsIncluded();
+    matchers::ChromosomeMatcher descendantMatcher(descendant);
+    descendantMatcher.checkIfHasSamePeopleAs(parent1);
 }
 

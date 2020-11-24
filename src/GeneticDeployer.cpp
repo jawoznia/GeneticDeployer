@@ -32,26 +32,21 @@ void GeneticDeployer::start() {
  * */
 
 /*
- * 1. Fitness function: It would be nice if chromosome was a class with implemented fitness function.
- * 2. Selection: based on Fitness function. Fittest should survive. But there should be some probability function that would sometimes let less fitests individuals survive. This should create pairs of chromosomes.
- * 3. Crossover: This should randomly merge two chromosomes from pairs into new pair or maybe one individual.
+ * 1. [DONE] Fitness function: It would be nice if chromosome was a class with implemented fitness function.
+ * 2. [PARTIALY DONE] Selection: based on Fitness function. Fittest should survive. But there should be some probability function that would sometimes let less fitests individuals survive. This should create pairs of chromosomes.
+ * 3. [DONE] Crossover: This should randomly merge two chromosomes from pairs into new pair or maybe one individual.
  * 4. Mutation: Random probability for random change of genes.
  * 5. Termination: a) stop if no significant change is made between generations.
  * b) Maybe time.
  * */
 
-/*
- * Chromosome -> handle solution and it's score. Also it should have logic to calculate fitness.
- *              -> store also shared pointer to all developers and managers
- *              3
- * GeneticDeployer -> create random solutions stored in std::array
- *                  -> think about some way to swap data between them.
- */
-
 void GeneticDeployer::calculate()
 {
     initPopulation();
-    crossover();
+    for (int i = 0; i < 300; ++i) {
+        crossover();
+        mutate();
+    }
 }
 
 void GeneticDeployer::initPopulation()
@@ -97,19 +92,23 @@ std::uint32_t GeneticDeployer::getMostFitnessSolutionId(const std::vector<std::u
 void GeneticDeployer::crossover()
 {
     const auto ids = tournamentSelection();
+    std::vector<std::unique_ptr<Chromosome>> descendants;
 
-    // mNumberOfSelections - 1 because it should secure from crash in case mNumberOfSelections is odd
     for (std::uint32_t i = 0; i < mNumberOfSelections - 1; i += 2)
     {
-        createDescendatsFor(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]);
+        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
     }
+    // and what now? descendants are created. Now should they be stored in some other vector. And what about mutation.
+    // Should descendants be mutated too? Need to find info about this.
+    // Neverheless as crossover seem to be done this project is I think like 85% done for alpha release.
 }
 
 void GeneticDeployer::createDescendatsFor(const Chromosome& parent1, const Chromosome& parent2)
 {
-   /* std::uniform_int_distribution<> disStart(0, parent1.mSolution.size() - 1);
-    const std::uint32_t startIndex(disStart(mMt));
-    std::uniform_int_distribution<> disFinish(startIndex, parent1.mSolution.size() - 1);
-    const std::uint32_t finishIndex(disFinish(mMt));*/
     auto descendant(std::make_unique<Chromosome>(parent1, parent2));
 }
+
+void GeneticDeployer::mutate() {
+
+}
+

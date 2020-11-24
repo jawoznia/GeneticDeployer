@@ -12,17 +12,16 @@ namespace matchers
 
 class ChromosomeMatcher {
 public:
-    ChromosomeMatcher (const Chromosome& parent, const Chromosome& descendant)
-        : mParent(parent)
-        , mDescendant(descendant)
+    ChromosomeMatcher (const Chromosome& descendant)
+        : mDescendant(descendant)
     {}
 
-    void checkIfEveryPersonIsIncluded() const {
+    void checkIfHasSamePeopleAs(const Chromosome& chr) const {
         auto descendantIds(getAllPersonIds(mDescendant));
-        auto parentIds(getAllPersonIds(mParent));
+        auto chrIds(getAllPersonIds(chr));
         std::sort(descendantIds.begin(), descendantIds.end());
-        std::sort(parentIds.begin(), parentIds.end());
-        ASSERT_THAT(descendantIds, testing::ContainerEq(parentIds));
+        std::sort(chrIds.begin(), chrIds.end());
+        ASSERT_THAT(descendantIds, testing::ContainerEq(chrIds));
     }
 
     std::vector<std::uint32_t> getAllPersonIds(const Chromosome& chromosome) const {
@@ -44,7 +43,6 @@ public:
     }
 
 private:
-    const Chromosome& mParent;
     const Chromosome& mDescendant;
 };
 

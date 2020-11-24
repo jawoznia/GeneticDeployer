@@ -27,6 +27,7 @@ private:
     std::uint32_t getMostFitnessSolutionId(const std::vector<std::uint32_t>&);
     void crossover();
     void createDescendatsFor(const Chromosome&, const Chromosome&);
+    void mutate();
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
