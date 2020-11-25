@@ -186,6 +186,27 @@ void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
     }
 }
 
+// Simple swap mutation.
+// For @numberOfMutation times pair of people with same position are chosen and swapped
+void Chromosome::mutate() {
+    static constexpr int numberOfMutation = 2;
+    for (int i = 0; i < numberOfMutation; ++i) {
+        std::uint32_t firRow;
+        std::uint32_t firColumn;
+        do {
+            firRow = getRandomRow();
+            firColumn = getRandomColumn();
+        } while (mSolution[firRow][firColumn].mType == SeatType::Unavailable);
+        std::uint32_t secRow;
+        std::uint32_t secColumn;
+        do {
+            secRow = getRandomRow();
+            secColumn = getRandomColumn();
+        } while (mSolution[firRow][firColumn].mType != mSolution[secRow][secColumn].mType);
+        std::swap(mSolution[firRow][firColumn], mSolution[firRow][firColumn]);
+   }
+}
+
 std::uint32_t Chromosome::getRandomColumn() const {
     std::uint32_t sizeOfColumns = mSolution[0].size();
     std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);

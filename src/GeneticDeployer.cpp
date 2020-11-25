@@ -42,10 +42,16 @@ void GeneticDeployer::start() {
 
 void GeneticDeployer::calculate()
 {
+    static constexpr std::uint32_t numberOfGenerations = 300;
     initPopulation();
-    for (int i = 0; i < 300; ++i) {
+    for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
         crossover();
-        mutate();
+        mutation();
+        calculateFitness();
+        getMostSuited();
+    }
+    for (const auto& solution : mSolutions) {
+        std::cout << "Solution's fitness is " << solution->mFitness << "\n";
     }
 }
 
@@ -55,7 +61,7 @@ void GeneticDeployer::initPopulation()
     for (auto& solution : mSolutions)
     {
         solution = std::make_unique<Chromosome>(*mDataHolder);
-    }    
+    }
 }
 
 std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
@@ -98,17 +104,28 @@ void GeneticDeployer::crossover()
     {
         descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
     }
-    // and what now? descendants are created. Now should they be stored in some other vector. And what about mutation.
-    // Should descendants be mutated too? Need to find info about this.
-    // Neverheless as crossover seem to be done this project is I think like 85% done for alpha release.
+    mSolutions.insert(mSolutions.end(),
+        std::make_move_iterator(descendants.begin()),
+        std::make_move_iterator(descendants.end()));
 }
 
-void GeneticDeployer::createDescendatsFor(const Chromosome& parent1, const Chromosome& parent2)
-{
-    auto descendant(std::make_unique<Chromosome>(parent1, parent2));
+void GeneticDeployer::mutation() {
+    std::uniform_real_distribution<> mutationProbabilityDis(0, 1);
+    for (const auto& solution : mSolutions) {
+        if (mutationProbabilityDis(mMt) < 0.15) {
+            solution->mutate();
+        }
+    }
 }
 
-void GeneticDeployer::mutate() {
+void GeneticDeployer::calculateFitness() {
+    for (const auto& solution : mSolutions) {
+        solution->calculateFitness();
+    }
+}
 
+void GeneticDeployer::getMostSuited() {
+    std::sort(mSolutions.begin(), mSolutions.end());
+    mSolutions.erase(mSolutions.begin() + mSizeOfPopulation, mSolutions.end());
 }
 

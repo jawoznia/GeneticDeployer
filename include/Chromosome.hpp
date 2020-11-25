@@ -34,6 +34,7 @@ public:
     std::uint32_t getFitness();
     void setPerson(Gene& gene);
     void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
+    void mutate();
 
 private:
     Chromosome();
