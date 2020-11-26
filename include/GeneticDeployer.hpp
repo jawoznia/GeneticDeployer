@@ -29,6 +29,7 @@ private:
     void mutation();
     void calculateFitness();
     void getMostSuited();
+    void printBestAndWorstSolution();
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;

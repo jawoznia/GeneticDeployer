@@ -58,6 +58,7 @@ SET(HEADERS
     include/GeneticDeployer.hpp
     include/DataStructures.hpp
 
+    include/helpers/Printers.hpp
     include/helpers/RandomNumberGenerator.hpp
 )
 set(SOURCES

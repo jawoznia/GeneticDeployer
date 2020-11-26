@@ -4,6 +4,8 @@
 
 #include "../include/GeneticDeployer.hpp"
 
+#include "../include/helpers/Printers.hpp"
+
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -35,7 +37,7 @@ void GeneticDeployer::start() {
  * 1. [DONE] Fitness function: It would be nice if chromosome was a class with implemented fitness function.
  * 2. [PARTIALY DONE] Selection: based on Fitness function. Fittest should survive. But there should be some probability function that would sometimes let less fitests individuals survive. This should create pairs of chromosomes.
  * 3. [DONE] Crossover: This should randomly merge two chromosomes from pairs into new pair or maybe one individual.
- * 4. Mutation: Random probability for random change of genes.
+ * 4. [DONE] Mutation: Random probability for random change of genes.
  * 5. Termination: a) stop if no significant change is made between generations.
  * b) Maybe time.
  * */
@@ -53,6 +55,7 @@ void GeneticDeployer::calculate()
     for (const auto& solution : mSolutions) {
         std::cout << "Solution's fitness is " << solution->mFitness << "\n";
     }
+    printBestAndWorstSolution();
 }
 
 void GeneticDeployer::initPopulation()
@@ -127,5 +130,15 @@ void GeneticDeployer::calculateFitness() {
 void GeneticDeployer::getMostSuited() {
     std::sort(mSolutions.begin(), mSolutions.end());
     mSolutions.erase(mSolutions.begin() + mSizeOfPopulation, mSolutions.end());
+}
+
+void GeneticDeployer::printBestAndWorstSolution() {
+    std::cout << "Sortign\n";
+    std::sort(mSolutions.begin(), mSolutions.end());
+    std::cout << "printing best\n";
+    printers::printSolution(**mSolutions.begin());
+    std::cout << "Printing worst\n";
+    //printers::printSolution(**mSolutions.rbegin());
+    std::cout << "Done\n";
 }
 
