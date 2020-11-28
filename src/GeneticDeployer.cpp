@@ -44,7 +44,7 @@ void GeneticDeployer::start() {
 
 void GeneticDeployer::calculate()
 {
-    static constexpr std::uint32_t numberOfGenerations = 300;
+    static constexpr std::uint32_t numberOfGenerations = 1000;
     initPopulation();
     for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
         crossover();
@@ -106,6 +106,7 @@ void GeneticDeployer::crossover()
     for (std::uint32_t i = 0; i < mNumberOfSelections - 1; i += 2)
     {
         descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
+        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i + 1]], *mSolutions[ids[i]]));
     }
     mSolutions.insert(mSolutions.end(),
         std::make_move_iterator(descendants.begin()),
