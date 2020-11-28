@@ -29,7 +29,7 @@ void DataHolder::SetSeats(const std::vector<std::string>& words) {
 
     for (int row_index = 0; row_index < mSeats.size(); ++row_index) {
         for (int column_index = 0; column_index < mSeats[row_index].size(); ++column_index) {
-            std::cout << "row_index = " << row_index << "; column_index = " << column_index << "\n";
+          //  std::cout << "row_index = " << row_index << "; column_index = " << column_index << "\n";
             SetSeat(row_index, column_index, words.at(row_index + 2).at(column_index));
         }
     }
@@ -103,11 +103,11 @@ void DataHolder::SetManagers(const std::vector<std::string> &words) {
     {
         return;
     }
-    std::cout << "managers size is " << size_of_managers << std::endl;
+    //std::cout << "managers size is " << size_of_managers << std::endl;
     mManagers.resize(size_of_managers);
 
     std::advance(mWords_iterator, 1);
-    std::cout << "wolololo" << std::endl;
+  //  std::cout << "wolololo" << std::endl;
     for (uint32_t i = 0; i < size_of_managers; ++i) {
         mManagers.at(i) = CreateManager();
     }

@@ -36,6 +36,10 @@ public:
     void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
     void mutate();
 
+    bool operator <(const Chromosome& chr) {
+        return mFitness < chr.mFitness;
+    }
+
 private:
     Chromosome();
     void doCrossover(const Chromosome&);

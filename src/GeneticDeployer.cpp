@@ -128,17 +128,22 @@ void GeneticDeployer::calculateFitness() {
 }
 
 void GeneticDeployer::getMostSuited() {
-    std::sort(mSolutions.begin(), mSolutions.end());
+    sort();
     mSolutions.erase(mSolutions.begin() + mSizeOfPopulation, mSolutions.end());
 }
 
+void GeneticDeployer::sort() {
+    std::sort(mSolutions.begin(), mSolutions.end(),
+        [](const std::unique_ptr<Chromosome>& chr1, const std::unique_ptr<Chromosome>& chr2) {
+            return chr1->mFitness > chr2->mFitness;
+        });
+}
+
 void GeneticDeployer::printBestAndWorstSolution() {
-    std::cout << "Sortign\n";
-    std::sort(mSolutions.begin(), mSolutions.end());
+    sort();
     std::cout << "printing best\n";
     printers::printSolution(**mSolutions.begin());
     std::cout << "Printing worst\n";
-    //printers::printSolution(**mSolutions.rbegin());
-    std::cout << "Done\n";
+    printers::printSolution(**mSolutions.rbegin());
 }
 

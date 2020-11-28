@@ -32,6 +32,9 @@ private:
     void printBestAndWorstSolution();
 
 private:
+    void sort();
+
+private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
