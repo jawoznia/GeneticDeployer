@@ -50,10 +50,10 @@ void GeneticDeployer::calculate()
         crossover();
         mutation();
         calculateFitness();
-        getMostSuited();
     }
+    int i = 0;
     for (const auto& solution : mSolutions) {
-        std::cout << "Solution's fitness is " << solution->mFitness << "\n";
+        std::cout << i++ << ". Solution's fitness is " << solution->mFitness << "\n";
     }
     printBestAndWorstSolution();
 }
@@ -103,11 +103,12 @@ void GeneticDeployer::crossover()
     const auto ids = tournamentSelection();
     std::vector<std::unique_ptr<Chromosome>> descendants;
 
-    for (std::uint32_t i = 0; i < mNumberOfSelections - 1; i += 2)
+    descendants.emplace_back(std::make_unique<Chromosome>(**mSolutions.begin(), **mSolutions.rbegin()));
+    for (std::uint32_t i = 0; i < mNumberOfSelections - 1; ++i)
     {
         descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
-        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i + 1]], *mSolutions[ids[i]]));
     }
+    getMostSuited();
     mSolutions.insert(mSolutions.end(),
         std::make_move_iterator(descendants.begin()),
         std::make_move_iterator(descendants.end()));
@@ -129,8 +130,9 @@ void GeneticDeployer::calculateFitness() {
 }
 
 void GeneticDeployer::getMostSuited() {
+    static constexpr std::uint32_t numberOfParentsToNextGeneration = 10;
     sort();
-    mSolutions.erase(mSolutions.begin() + mSizeOfPopulation, mSolutions.end());
+    mSolutions.erase(mSolutions.begin() + numberOfParentsToNextGeneration, mSolutions.end());
 }
 
 void GeneticDeployer::sort() {

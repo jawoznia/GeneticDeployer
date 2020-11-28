@@ -39,8 +39,8 @@ private:
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
 
-    std::uint32_t mSizeOfPopulation = 50;
-    std::uint32_t mNumberOfSelections = 20;
+    constexpr static std::uint32_t mSizeOfPopulation = 50;
+    constexpr static std::uint32_t mNumberOfSelections = 40;
     std::random_device mRd;
     std::mt19937 mMt;
 };
