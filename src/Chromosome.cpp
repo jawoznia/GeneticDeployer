@@ -61,9 +61,9 @@ void Chromosome::setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& peo
         return;
     }
     std::uniform_int_distribution<> dis(0, people.size() - 1);
-    auto index = dis(mt);
+    auto indexShift = dis(mt);
     auto personIter = people.begin();
-    std::advance(personIter, index);
+    std::advance(personIter, indexShift);
     gene.mPerson = *personIter;
     personIter = people.erase(personIter);
 }
@@ -128,10 +128,12 @@ void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& pe
 {
     std::unordered_set<std::uint32_t> allSkills;
     std::merge(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(), std::inserter(allSkills, allSkills.begin()));
+        person2.skill_ids.begin(), person2.skill_ids.end(),
+        std::inserter(allSkills, allSkills.begin()));
     std::unordered_set<std::uint32_t> commonSkills;
     std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(), std::inserter(commonSkills, commonSkills.begin()));
+        person2.skill_ids.begin(), person2.skill_ids.end(),
+        std::inserter(commonSkills, commonSkills.begin()));
     const std::uint32_t workPotential = commonSkills.size() * (allSkills.size() - commonSkills.size());
     const std::uint32_t bonusPotential =
         person1.company_id == person2.company_id ? person1.bonus_potential * person2.bonus_potential : 0;
