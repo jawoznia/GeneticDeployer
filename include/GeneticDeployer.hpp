@@ -30,6 +30,7 @@ private:
     void calculateFitness();
     void getMostSuited();
     void printBestAndWorstSolution();
+    void checkIfAnySolutionHasDuplicates();
 
 private:
     void sort();

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <unordered_set>
+#include <set>
 
 Chromosome::Chromosome() = default;
 
@@ -35,7 +36,7 @@ void Chromosome::initSolution(const data::DataHolder& data)
             setPerson(mSolution[row][column]);
         }
     }
-    std::cout << "Solution initialized!" << std::endl;
+    //std::cout << "Solution initialized!" << std::endl;
 }
 
 void Chromosome::setPerson(Gene& gene)
@@ -180,9 +181,10 @@ void Chromosome::insertPerson(const Gene& gene, std::uint32_t row, std::uint32_t
 }
 
 void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
-        std::shared_ptr<Person> person, std::uint32_t row, std::uint32_t column) {
-    if (std::find(people.begin(), people.end(), person) != people.end()) {
-        std::swap(mSolution[row][column].mPerson, person);
+        const std::shared_ptr<Person>& person, std::uint32_t row, std::uint32_t column) {
+    const auto& foundPerson = std::find(people.begin(), people.end(), person);
+    if (foundPerson != people.end()) {
+        std::swap(mSolution[row][column].mPerson, *foundPerson);
     } else {
         std::swap(mSolution[row][column].mPerson, people[0]);
     }
@@ -219,5 +221,23 @@ std::uint32_t Chromosome::getRandomRow() const {
     std::uint32_t sizeOfRows = mSolution.size();
     std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
     return rowDis(mt);
+}
+
+bool Chromosome::hasDuplicates() {
+    std::set<std::uint32_t> uniqueIds;
+    for (const auto& row : mSolution) {
+        for (const auto& gene : row) {
+            if (gene.mType == SeatType::Unavailable) {
+                continue;
+            }
+            // If result.second is true it means that value was not inserted thus there is duplicated person
+            auto result = uniqueIds.insert(gene.mPerson->person_id);
+            bool wasValuePresent = not result.second;
+            if (wasValuePresent) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 

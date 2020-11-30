@@ -10,6 +10,7 @@
 #include <iostream>
 #include <limits>
 #include <random>
+#include <stdexcept>
 
 GeneticDeployer::GeneticDeployer()
     : mFileReader(std::make_unique<data::FileReader>("../data/a_solar.txt"))
@@ -47,8 +48,11 @@ void GeneticDeployer::calculate()
     static constexpr std::uint32_t numberOfGenerations = 1000;
     initPopulation();
     for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
+        checkIfAnySolutionHasDuplicates();
         crossover();
+        checkIfAnySolutionHasDuplicates();
         mutation();
+        checkIfAnySolutionHasDuplicates();
         calculateFitness();
     }
     int i = 0;
@@ -148,5 +152,14 @@ void GeneticDeployer::printBestAndWorstSolution() {
     printers::printSolution(**mSolutions.begin());
     std::cout << "Printing worst\n";
     printers::printSolution(**mSolutions.rbegin());
+}
+
+void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
+    for (const auto& solution : mSolutions) {
+        if (solution->hasDuplicates()) {
+            std::cout << "Gotcha!\n";
+            throw std::runtime_error("Duplicate found. Stopping program!");
+        }
+    }
 }
 

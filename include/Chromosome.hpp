@@ -35,6 +35,7 @@ public:
     void setPerson(Gene& gene);
     void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
     void mutate();
+    bool hasDuplicates();
 
     bool operator <(const Chromosome& chr) {
         return mFitness < chr.mFitness;
@@ -46,7 +47,7 @@ private:
     std::uint32_t getRandomColumn() const;
     std::uint32_t getRandomRow() const;
     void insertPerson(const Gene&, std::uint32_t, std::uint32_t);
-    void addToContainer(std::vector<std::shared_ptr<Person>>&, std::shared_ptr<Person>, std::uint32_t, std::uint32_t);
+    void addToContainer(std::vector<std::shared_ptr<Person>>&, const std::shared_ptr<Person>&, std::uint32_t, std::uint32_t);
 
 public:
     std::uint32_t mFitness;
