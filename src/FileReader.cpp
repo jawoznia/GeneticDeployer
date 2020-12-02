@@ -10,7 +10,7 @@
 namespace data
 {
 
-FileReader::FileReader(const std::string &&fileName) : mStream(fileName), mDataHolder(std::make_unique<DataHolder>()) {
+FileReader::FileReader(const std::string& fileName) : mStream(fileName), mDataHolder(std::make_unique<DataHolder>()) {
     mStream.open(fileName, std::ios::in);
     ProcessStream();
 }

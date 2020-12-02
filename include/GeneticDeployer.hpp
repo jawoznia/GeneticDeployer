@@ -14,7 +14,7 @@
 
 class GeneticDeployer {
 public:
-    GeneticDeployer();
+    GeneticDeployer(const std::string&);
 
     void start();
 
@@ -31,14 +31,13 @@ private:
     void getMostSuited();
     void printBestAndWorstSolution();
     void checkIfAnySolutionHasDuplicates();
-
-private:
     void sort();
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
+    std::pair<std::uint32_t, std::uint8_t> mFitnessToOccurance;
 
     constexpr static std::uint32_t mSizeOfPopulation = 50;
     constexpr static std::uint32_t mNumberOfSelections = 40;

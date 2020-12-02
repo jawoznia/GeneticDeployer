@@ -17,7 +17,7 @@ namespace data
 
 class FileReader {
 public:
-    FileReader(const std::string&& fileName);
+    FileReader(const std::string& fileName);
     ~FileReader();
 
     std::unique_ptr<DataHolder> LoadData();

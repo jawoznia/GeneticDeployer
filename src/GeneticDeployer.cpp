@@ -12,8 +12,9 @@
 #include <random>
 #include <stdexcept>
 
-GeneticDeployer::GeneticDeployer()
-    : mFileReader(std::make_unique<data::FileReader>("../data/a_solar.txt"))
+GeneticDeployer::GeneticDeployer(const std::string& filename)
+    : mFileReader(std::make_unique<data::FileReader>(filename))
+    , mFitnessToOccurance(std::make_pair(0, 0))
     , mMt(mRd())
 {
 }
@@ -45,20 +46,29 @@ void GeneticDeployer::start() {
 
 void GeneticDeployer::calculate()
 {
-    static constexpr std::uint32_t numberOfGenerations = 1000;
+    static constexpr std::uint32_t numberOfGenerations = 100;
     initPopulation();
-    for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
-        checkIfAnySolutionHasDuplicates();
+    //for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
+    std::uint32_t generation = 0;
+    while (not shouldEnd()) {
+        std::cout << generation << " generation.\n";
+        if (generation++ == numberOfGenerations) {
+            std::cout << "Stopping due to generation limit\n";
+            break;
+        }
+        //checkIfAnySolutionHasDuplicates();
         crossover();
-        checkIfAnySolutionHasDuplicates();
+        std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
+        //checkIfAnySolutionHasDuplicates();
         mutation();
-        checkIfAnySolutionHasDuplicates();
+        //checkIfAnySolutionHasDuplicates();
         calculateFitness();
+        sort();
     }
-    int i = 0;
+    /*int i = 0;
     for (const auto& solution : mSolutions) {
         std::cout << i++ << ". Solution's fitness is " << solution->mFitness << "\n";
-    }
+    }*/
     printBestAndWorstSolution();
 }
 
@@ -161,5 +171,17 @@ void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
             throw std::runtime_error("Duplicate found. Stopping program!");
         }
     }
+}
+
+bool GeneticDeployer::shouldEnd() {
+    static constexpr std::uint8_t occurancesToStopProgram = 5;
+    const auto& currentBestFitness = (*mSolutions.begin())->mFitness;
+    if (mFitnessToOccurance.first == currentBestFitness) {
+        if (++mFitnessToOccurance.second == occurancesToStopProgram) {
+            return true;
+        }
+    }
+    mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
+    return false;
 }
 

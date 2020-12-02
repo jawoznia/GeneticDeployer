@@ -3,6 +3,6 @@
 
 int main() {
     std::cout << "============================= WELCOME TO GENETIC DEPLOYER =============================\n";
-    GeneticDeployer geneticDeployer;
+    GeneticDeployer geneticDeployer("../data/a_solar.txt");
     return 0;
 }
