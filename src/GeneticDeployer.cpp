@@ -117,7 +117,7 @@ void GeneticDeployer::crossover()
     const auto ids = tournamentSelection();
     std::vector<std::unique_ptr<Chromosome>> descendants;
 
-    descendants.emplace_back(std::make_unique<Chromosome>(**mSolutions.begin(), **mSolutions.rbegin()));
+    descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]));
     for (std::uint32_t i = 0; i < mNumberOfSelections - 1; ++i)
     {
         descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
@@ -158,10 +158,10 @@ void GeneticDeployer::sort() {
 
 void GeneticDeployer::printBestAndWorstSolution() {
     sort();
-    std::cout << "printing best\n";
-    printers::printSolution(**mSolutions.begin());
-    std::cout << "Printing worst\n";
-    printers::printSolution(**mSolutions.rbegin());
+    std::cout << "printing best " << (*mSolutions.begin())->mFitness << "\n";
+//    printers::printSolution(**mSolutions.begin());
+//    std::cout << "Printing worst\n";
+//    printers::printSolution(**mSolutions.rbegin());
 }
 
 void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
@@ -177,11 +177,12 @@ bool GeneticDeployer::shouldEnd() {
     static constexpr std::uint8_t occurancesToStopProgram = 5;
     const auto& currentBestFitness = (*mSolutions.begin())->mFitness;
     if (mFitnessToOccurance.first == currentBestFitness) {
-        if (++mFitnessToOccurance.second == occurancesToStopProgram) {
+        if ((++mFitnessToOccurance.second) == occurancesToStopProgram) {
             return true;
         }
+    } else {
+        mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
     }
-    mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
     return false;
 }
 

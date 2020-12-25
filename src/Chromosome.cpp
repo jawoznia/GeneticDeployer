@@ -185,7 +185,7 @@ void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
     const auto& foundPerson = std::find(people.begin(), people.end(), person);
     if (foundPerson != people.end()) {
         std::swap(mSolution[row][column].mPerson, *foundPerson);
-    } else {
+    } else if (not people.empty()) {
         std::swap(mSolution[row][column].mPerson, people[0]);
     }
 }
