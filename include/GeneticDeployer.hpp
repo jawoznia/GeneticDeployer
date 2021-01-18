@@ -16,6 +16,10 @@ class GeneticDeployer {
 public:
     GeneticDeployer(const std::string&);
 
+    void setSizeOfPopulation(std::uint32_t);
+    void setNumberOfStopOccurances(std::uint32_t);
+    void setNumberOfDescendants(std::uint8_t);
+
     void start();
 
 private:
@@ -39,8 +43,9 @@ private:
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
     std::pair<std::uint32_t, std::uint8_t> mFitnessToOccurance;
 
-    constexpr static std::uint32_t mSizeOfPopulation = 50;
-    constexpr static std::uint32_t mNumberOfSelections = 40;
+    std::uint32_t mSizeOfPopulation;
+    std::uint32_t mNumberOfSelections;
+    std::uint8_t mOccurancesToStopProgram;
     std::random_device mRd;
     std::mt19937 mMt;
 };

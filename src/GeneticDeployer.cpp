@@ -20,35 +20,19 @@ GeneticDeployer::GeneticDeployer(const std::string& filename)
 }
 
 void GeneticDeployer::start() {
-    std::cout << "Starting data loading.\n";
+//    std::cout << "Starting data loading.\n";
 
     mDataHolder = mFileReader->LoadData();
     
-    std::cout << "Data loaded. Starting calculation...\n";
+//    std::cout << "Data loaded. Starting calculation...\n";
 
     calculate();
 }
-
-/* 
- * 1. Population    - all solutions
- * 2. Chromosome    - one solution
- * 3. Gene          - one seat
- * */
-
-/*
- * 1. [DONE] Fitness function: It would be nice if chromosome was a class with implemented fitness function.
- * 2. [PARTIALY DONE] Selection: based on Fitness function. Fittest should survive. But there should be some probability function that would sometimes let less fitests individuals survive. This should create pairs of chromosomes.
- * 3. [DONE] Crossover: This should randomly merge two chromosomes from pairs into new pair or maybe one individual.
- * 4. [DONE] Mutation: Random probability for random change of genes.
- * 5. Termination: a) stop if no significant change is made between generations.
- * b) Maybe time.
- * */
 
 void GeneticDeployer::calculate()
 {
     static constexpr std::uint32_t numberOfGenerations = 100;
     initPopulation();
-    //for (std::uint32_t i = 0; i < numberOfGenerations; ++i) {
     std::uint32_t generation = 0;
     while (not shouldEnd()) {
         std::cout << generation << " generation.\n";
@@ -56,19 +40,12 @@ void GeneticDeployer::calculate()
             std::cout << "Stopping due to generation limit\n";
             break;
         }
-        //checkIfAnySolutionHasDuplicates();
         crossover();
         std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
-        //checkIfAnySolutionHasDuplicates();
         mutation();
-        //checkIfAnySolutionHasDuplicates();
         calculateFitness();
         sort();
     }
-    /*int i = 0;
-    for (const auto& solution : mSolutions) {
-        std::cout << i++ << ". Solution's fitness is " << solution->mFitness << "\n";
-    }*/
     printBestAndWorstSolution();
 }
 
@@ -101,12 +78,14 @@ std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
 std::uint32_t GeneticDeployer::getMostFitnessSolutionId(const std::vector<std::uint32_t>& ids)
 {
     std::uint32_t maxVal = std::numeric_limits<std::uint32_t>::min();
-    std::uint32_t bestId = 0;
+    std::uint32_t bestId = ids[0];
     for (const auto id : ids)
     {
-        if (maxVal < mSolutions[id]->getFitness())
+        auto currentFitness = mSolutions[id]->getFitness();
+        if (maxVal < currentFitness)
         {
             bestId = id;
+            maxVal = currentFitness;
         }
     }
     return bestId;
@@ -144,7 +123,7 @@ void GeneticDeployer::calculateFitness() {
 }
 
 void GeneticDeployer::getMostSuited() {
-    static constexpr std::uint32_t numberOfParentsToNextGeneration = 10;
+    static std::uint32_t numberOfParentsToNextGeneration = mSizeOfPopulation - mNumberOfSelections;
     sort();
     mSolutions.erase(mSolutions.begin() + numberOfParentsToNextGeneration, mSolutions.end());
 }
@@ -159,30 +138,40 @@ void GeneticDeployer::sort() {
 void GeneticDeployer::printBestAndWorstSolution() {
     sort();
     std::cout << "printing best " << (*mSolutions.begin())->mFitness << "\n";
-//    printers::printSolution(**mSolutions.begin());
-//    std::cout << "Printing worst\n";
-//    printers::printSolution(**mSolutions.rbegin());
 }
 
 void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
     for (const auto& solution : mSolutions) {
         if (solution->hasDuplicates()) {
-            std::cout << "Gotcha!\n";
             throw std::runtime_error("Duplicate found. Stopping program!");
         }
     }
 }
 
 bool GeneticDeployer::shouldEnd() {
-    static constexpr std::uint8_t occurancesToStopProgram = 5;
     const auto& currentBestFitness = (*mSolutions.begin())->mFitness;
     if (mFitnessToOccurance.first == currentBestFitness) {
-        if ((++mFitnessToOccurance.second) == occurancesToStopProgram) {
+        if ((++mFitnessToOccurance.second) == mOccurancesToStopProgram) {
             return true;
         }
     } else {
         mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
     }
     return false;
+}
+
+void GeneticDeployer::setSizeOfPopulation(std::uint32_t sizeOfPopulation)
+{
+    mSizeOfPopulation = sizeOfPopulation;
+}
+
+void GeneticDeployer::setNumberOfStopOccurances(std::uint32_t occurancesToStopProgram)
+{
+    mOccurancesToStopProgram = occurancesToStopProgram;
+}
+
+void GeneticDeployer::setNumberOfDescendants(std::uint8_t numberOfDescendants)
+{
+    mNumberOfSelections = numberOfDescendants;
 }
 

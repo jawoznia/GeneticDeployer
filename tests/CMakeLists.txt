@@ -6,7 +6,9 @@ set(Sources
     DeployerTests.cpp
     some_tests.cpp
     ChromosomeTests.cpp
+    PerformanceTests.cpp
 
+    PerformanceParameters.hpp
     matchers/ChromosomeMatcher.cpp
 )
 

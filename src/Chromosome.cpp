@@ -230,7 +230,6 @@ bool Chromosome::hasDuplicates() {
             if (gene.mType == SeatType::Unavailable) {
                 continue;
             }
-            // If result.second is true it means that value was not inserted thus there is duplicated person
             auto result = uniqueIds.insert(gene.mPerson->person_id);
             bool wasValuePresent = not result.second;
             if (wasValuePresent) {
