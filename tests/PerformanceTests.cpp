@@ -9,7 +9,7 @@
 #include "PerformanceParameters.hpp"
 
 
-class PerformanceFixture : public ::testing::TestWithParam<std::tuple<>> {
+class PerformanceFixture : public ::testing::TestWithParam<data::PerformanceParameters> {
 public:
     PerformanceFixture() {}
 
@@ -17,51 +17,15 @@ protected:
     std::unique_ptr<GeneticDeployer> mSut;
 };
 
-TEST_F(PerformanceFixture, RunForSolar) {
-    mSut = std::make_unique<GeneticDeployer>("../data/a_solar.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
-    mSut->start();
-}
+INSTANTIATE_TEST_SUITE_P(PerformanceTests, PerformanceFixture,
+    ::testing::ValuesIn(data::getPerformanceParameters()));
 
-TEST_F(PerformanceFixture, RunForDream) {
-    mSut = std::make_unique<GeneticDeployer>("../data/b_dream.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
-    mSut->start();
-}
-
-TEST_F(PerformanceFixture, RunForSoup) {
-    mSut = std::make_unique<GeneticDeployer>("../data/c_soup.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
-    mSut->start();
-}
-
-TEST_F(PerformanceFixture, RunForMaelstrom) {
-    mSut = std::make_unique<GeneticDeployer>("../data/d_maelstrom.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
-    mSut->start();
-}
-
-TEST_F(PerformanceFixture, RunForIgloos) {
-    mSut = std::make_unique<GeneticDeployer>("../data/e_igloos.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
-    mSut->start();
-}
-
-TEST_F(PerformanceFixture, RunForGlitch) {
-    mSut = std::make_unique<GeneticDeployer>("../data/f_glitch.txt");
-    mSut->setSizeOfPopulation(50);
-    mSut->setNumberOfStopOccurances(5);
-    mSut->setNumberOfDescendants(40);
+TEST_P(PerformanceFixture, MakeResearch) {
+    auto param = GetParam();
+    mSut = std::make_unique<GeneticDeployer>(param.fileName);
+    mSut->setSizeOfPopulation(param.sizeOfPopulation);
+    mSut->setNumberOfStopOccurances(param.occurancesToStopProgram);
+    mSut->setNumberOfDescendants(param.numberOfSelections);
     mSut->start();
 }
 

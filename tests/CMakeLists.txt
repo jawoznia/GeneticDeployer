@@ -4,7 +4,6 @@ set(This Genetic-deployer-TESTS)
 
 set(Sources
     DeployerTests.cpp
-    some_tests.cpp
     ChromosomeTests.cpp
     PerformanceTests.cpp
 

@@ -11,10 +11,13 @@
 #include <limits>
 #include <random>
 #include <stdexcept>
+#include <sstream>
 
 GeneticDeployer::GeneticDeployer(const std::string& filename)
     : mFileReader(std::make_unique<data::FileReader>(filename))
+    , mFileExporter(std::make_unique<data::FileExporter>("CalculatedScores.txt"))
     , mFitnessToOccurance(std::make_pair(0, 0))
+    , mFileName(filename)
     , mMt(mRd())
 {
 }
@@ -27,6 +30,7 @@ void GeneticDeployer::start() {
 //    std::cout << "Data loaded. Starting calculation...\n";
 
     calculate();
+    saveScoreToFile((*mSolutions.begin())->mFitness);
 }
 
 void GeneticDeployer::calculate()
@@ -158,6 +162,15 @@ bool GeneticDeployer::shouldEnd() {
         mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
     }
     return false;
+}
+
+void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
+    std::stringstream scoreToSave;
+    scoreToSave << mFileName << "\n";
+    scoreToSave << mSizeOfPopulation << " " << mOccurancesToStopProgram << " " << mNumberOfSelections << "\n";
+    scoreToSave << fitness << "\n\n"; 
+
+    mFileExporter->appendData(scoreToSave.str());
 }
 
 void GeneticDeployer::setSizeOfPopulation(std::uint32_t sizeOfPopulation)

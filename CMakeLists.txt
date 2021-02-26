@@ -54,6 +54,7 @@ endif()
 SET(HEADERS
     include/Chromosome.hpp
     include/DataHolder.hpp
+    include/FileExporter.hpp
     include/FileReader.hpp
     include/GeneticDeployer.hpp
     include/DataStructures.hpp
@@ -64,6 +65,7 @@ SET(HEADERS
 set(SOURCES
     src/Chromosome.cpp
     src/DataHolder.cpp
+    src/FileExporter.cpp
     src/FileReader.cpp
     src/GeneticDeployer.cpp
 )

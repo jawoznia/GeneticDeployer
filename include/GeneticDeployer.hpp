@@ -7,6 +7,7 @@
 
 #include "../include/Chromosome.hpp"
 #include "../include/DataHolder.hpp"
+#include "../include/FileExporter.hpp"
 #include "../include/FileReader.hpp"
 
 #include <memory>
@@ -36,13 +37,16 @@ private:
     void printBestAndWorstSolution();
     void checkIfAnySolutionHasDuplicates();
     void sort();
+    void saveScoreToFile(std::uint32_t fitness);
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
+    std::unique_ptr<data::FileExporter> mFileExporter;
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
     std::pair<std::uint32_t, std::uint8_t> mFitnessToOccurance;
 
+    const std::string mFileName;
     std::uint32_t mSizeOfPopulation;
     std::uint32_t mNumberOfSelections;
     std::uint8_t mOccurancesToStopProgram;
