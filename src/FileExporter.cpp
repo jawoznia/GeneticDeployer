@@ -10,8 +10,8 @@
 namespace data
 {
 
-FileExporter::FileExporter(const std::string& fileName) : mStream(fileName) {
-    mStream.open(fileName, std::ios::in);
+FileExporter::FileExporter(const std::string& fileName) {
+    mStream.open(fileName, std::ofstream::out | std::ofstream::app);
 }
 
 FileExporter::~FileExporter() {
@@ -20,7 +20,7 @@ FileExporter::~FileExporter() {
 }
 
 void FileExporter::appendData(const std::string& data) {
-    mStream << data << "\n"; 
+    mStream << data << "\n";
 }
 
 void FileExporter::appendData(const std::vector<std::string>& data) {

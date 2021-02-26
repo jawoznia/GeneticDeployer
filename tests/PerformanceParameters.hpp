@@ -29,7 +29,7 @@ inline std::vector<PerformanceParameters> getPerformanceParameters() {
     performanceParameters.emplace_back("../data/a_solar.txt", 100, 80, 10);
     performanceParameters.emplace_back("../data/a_solar.txt", 150, 120, 10);
     performanceParameters.emplace_back("../data/a_solar.txt", 200, 160, 10);
-
+/*
     performanceParameters.emplace_back("../data/b_dream.txt", 50, 40, 10);
     performanceParameters.emplace_back("../data/b_dream.txt", 100, 80, 10);
     performanceParameters.emplace_back("../data/b_dream.txt", 150, 120, 10);
@@ -39,7 +39,7 @@ inline std::vector<PerformanceParameters> getPerformanceParameters() {
     performanceParameters.emplace_back("../data/c_soup.txt", 100, 80, 10);
     performanceParameters.emplace_back("../data/c_soup.txt", 150, 120, 10);
     performanceParameters.emplace_back("../data/c_soup.txt", 200, 160, 10);
-/*
+
     performanceParameters.emplace_back("../data/d_maelstrom.txt", 50, 40, 10);
     performanceParameters.emplace_back("../data/d_maelstrom.txt", 100, 80, 10);
     performanceParameters.emplace_back("../data/d_maelstrom.txt", 150, 120, 10);
