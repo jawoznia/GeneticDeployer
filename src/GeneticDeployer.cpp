@@ -166,12 +166,14 @@ bool GeneticDeployer::shouldEnd() {
 
 void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
     std::stringstream scoreToSave;
-    auto endTime = std::chrono::system_time::now();
+    auto endTime = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = endTime-mStartTime;
     scoreToSave << mFileName
                 << "\nSize_of_pop " << mSizeOfPopulation
                 << "\noccurances " << mOccurancesToStopProgram
                 << "\nselections " << mNumberOfSelections
-                << "\nFitness " << fitness;
+                << "\nFitness " << fitness
+                << "\nTime " << elapsed_seconds.count() << "s";
     mFileExporter->appendData(scoreToSave.str());
 }
 
