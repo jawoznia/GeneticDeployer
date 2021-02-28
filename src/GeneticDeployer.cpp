@@ -24,7 +24,7 @@ GeneticDeployer::GeneticDeployer(const std::string& filename)
 
 void GeneticDeployer::start() {
 //    std::cout << "Starting data loading.\n";
-
+    mStartTime = std::chrono::system_clock::now();
     mDataHolder = mFileReader->LoadData();
     
 //    std::cout << "Data loaded. Starting calculation...\n";
@@ -166,10 +166,12 @@ bool GeneticDeployer::shouldEnd() {
 
 void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
     std::stringstream scoreToSave;
-    scoreToSave << mFileName << "\n";
-    scoreToSave << mSizeOfPopulation << " " << mOccurancesToStopProgram << " " << mNumberOfSelections << "\n";
-    scoreToSave << fitness << "\n\n"; 
-
+    auto endTime = std::chrono::system_time::now();
+    scoreToSave << mFileName
+                << "\nSize_of_pop " << mSizeOfPopulation
+                << "\noccurances " << mOccurancesToStopProgram
+                << "\nselections " << mNumberOfSelections
+                << "\nFitness " << fitness;
     mFileExporter->appendData(scoreToSave.str());
 }
 
@@ -183,7 +185,7 @@ void GeneticDeployer::setNumberOfStopOccurances(std::uint32_t occurancesToStopPr
     mOccurancesToStopProgram = occurancesToStopProgram;
 }
 
-void GeneticDeployer::setNumberOfDescendants(std::uint8_t numberOfDescendants)
+void GeneticDeployer::setNumberOfDescendants(std::uint32_t numberOfDescendants)
 {
     mNumberOfSelections = numberOfDescendants;
 }

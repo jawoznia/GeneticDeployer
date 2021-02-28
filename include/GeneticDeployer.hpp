@@ -12,6 +12,7 @@
 
 #include <memory>
 #include <vector>
+#include <chrono>
 
 class GeneticDeployer {
 public:
@@ -19,7 +20,7 @@ public:
 
     void setSizeOfPopulation(std::uint32_t);
     void setNumberOfStopOccurances(std::uint32_t);
-    void setNumberOfDescendants(std::uint8_t);
+    void setNumberOfDescendants(std::uint32_t);
 
     void start();
 
@@ -44,14 +45,15 @@ private:
     std::unique_ptr<data::FileExporter> mFileExporter;
     std::unique_ptr<data::DataHolder> mDataHolder;
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
-    std::pair<std::uint32_t, std::uint8_t> mFitnessToOccurance;
+    std::pair<std::uint32_t, std::uint32_t> mFitnessToOccurance;
 
     const std::string mFileName;
     std::uint32_t mSizeOfPopulation;
     std::uint32_t mNumberOfSelections;
-    std::uint8_t mOccurancesToStopProgram;
+    std::uint32_t mOccurancesToStopProgram;
     std::random_device mRd;
     std::mt19937 mMt;
+    std::chrono::time_point<std::chrono::system_clock> mStartTime;
 };
 
 
