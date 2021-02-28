@@ -23,12 +23,9 @@ GeneticDeployer::GeneticDeployer(const std::string& filename)
 }
 
 void GeneticDeployer::start() {
-//    std::cout << "Starting data loading.\n";
     mStartTime = std::chrono::system_clock::now();
     mDataHolder = mFileReader->LoadData();
     
-//    std::cout << "Data loaded. Starting calculation...\n";
-
     calculate();
     saveScoreToFile((*mSolutions.begin())->mFitness);
 }
@@ -65,7 +62,7 @@ void GeneticDeployer::initPopulation()
 std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
 {
     std::vector<std::uint32_t> winningIds(mNumberOfSelections);
-    std::uniform_int_distribution<> dis(0, mSolutions.size() - 1);
+    std::uniform_int_distribution<> dis(0, mSizeOfPopulation - 1);
     for (auto& winningId : winningIds)
     {
         const static std::uint32_t sizeOfSingleTournament = 5;
@@ -141,7 +138,7 @@ void GeneticDeployer::sort() {
 
 void GeneticDeployer::printBestAndWorstSolution() {
     sort();
-    std::cout << "printing best " << (*mSolutions.begin())->mFitness << "\n";
+    std::cout << "Printing best " << (*mSolutions.begin())->mFitness << "\n";
 }
 
 void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
@@ -153,10 +150,23 @@ void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
 }
 
 bool GeneticDeployer::shouldEnd() {
+    return isDurationTooLong() or isFitnessPeakFound();
+}
+
+bool GeneticDeployer::isDurationTooLong()
+{
+  static constexpr auto five_minutes{std::chrono::minutes(5)};
+  const auto currentTime{std::chrono::system_clock::now()};
+  return std::chrono::duration_cast<std::chrono::minutes>(
+      currentTime - mStartTime).count() < five_minutes.count();
+}
+
+bool GeneticDeployer::isFitnessPeakFound()
+{
     const auto& currentBestFitness = (*mSolutions.begin())->mFitness;
     if (mFitnessToOccurance.first == currentBestFitness) {
         if ((++mFitnessToOccurance.second) == mOccurancesToStopProgram) {
-            return true;
+          return true;
         }
     } else {
         mFitnessToOccurance = std::make_pair(currentBestFitness, 1);

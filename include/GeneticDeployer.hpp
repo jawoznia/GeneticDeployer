@@ -26,6 +26,8 @@ public:
 
 private:
     bool shouldEnd();
+    bool isDurationTooLong();
+    bool isFitnessPeakFound();
 
     void initPopulation();
     void calculate();
