@@ -46,11 +46,11 @@ void GeneticDeployer::initPopulation()
 
 void GeneticDeployer::calculate()
 {
-   while (not shouldEnd()) {
+    std::cout << __func__ << " starts.\n";
+    while (not shouldEnd()) {
         crossover();
         mutation();
         calculateFitness();
-        //sort();
     }
     printBest();
 }
@@ -134,6 +134,7 @@ void GeneticDeployer::sort() {
 }
 
 void GeneticDeployer::printBest() {
+    sort();
     std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
 }
 
