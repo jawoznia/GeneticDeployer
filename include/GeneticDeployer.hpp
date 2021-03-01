@@ -28,7 +28,9 @@ private:
     bool shouldEnd();
     bool isDurationTooLong();
     bool isFitnessPeakFound();
+    bool isMaxGenerationReached();
 
+    void init();
     void initPopulation();
     void calculate();
     std::vector<std::uint32_t> tournamentSelection();
@@ -37,7 +39,7 @@ private:
     void mutation();
     void calculateFitness();
     void getMostSuited();
-    void printBestAndWorstSolution();
+    void printBest();
     void checkIfAnySolutionHasDuplicates();
     void sort();
     void saveScoreToFile(std::uint32_t fitness);
@@ -49,13 +51,19 @@ private:
     std::vector<std::unique_ptr<Chromosome>> mSolutions;
     std::pair<std::uint32_t, std::uint32_t> mFitnessToOccurance;
 
+    // Configuration parameters
     const std::string mFileName;
     std::uint32_t mSizeOfPopulation;
     std::uint32_t mNumberOfSelections;
     std::uint32_t mOccurancesToStopProgram;
+    
+    // Termination parameters
+    std::chrono::time_point<std::chrono::system_clock> mStartTime;
+    std::uint32_t mGeneration;
+
+    // Rng parameters
     std::random_device mRd;
     std::mt19937 mMt;
-    std::chrono::time_point<std::chrono::system_clock> mStartTime;
 };
 
 

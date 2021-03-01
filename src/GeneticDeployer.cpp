@@ -15,39 +15,24 @@
 
 GeneticDeployer::GeneticDeployer(const std::string& filename)
     : mFileReader(std::make_unique<data::FileReader>(filename))
-    , mFileExporter(std::make_unique<data::FileExporter>("CalculatedScores.txt"))
+    , mFileExporter(std::make_unique<data::FileExporter>("CalculatedPerformance.txt"))
     , mFitnessToOccurance(std::make_pair(0, 0))
     , mFileName(filename)
+    , mGeneration(0)
     , mMt(mRd())
 {
 }
 
 void GeneticDeployer::start() {
-    mStartTime = std::chrono::system_clock::now();
-    mDataHolder = mFileReader->LoadData();
-    
+    init();
     calculate();
     saveScoreToFile((*mSolutions.begin())->mFitness);
 }
 
-void GeneticDeployer::calculate()
-{
-    static constexpr std::uint32_t numberOfGenerations = 100;
+void GeneticDeployer::init() {
+    mStartTime = std::chrono::system_clock::now();
+    mDataHolder = mFileReader->LoadData();
     initPopulation();
-    std::uint32_t generation = 0;
-    while (not shouldEnd()) {
-        std::cout << generation << " generation.\n";
-        if (generation++ == numberOfGenerations) {
-            std::cout << "Stopping due to generation limit\n";
-            break;
-        }
-        crossover();
-        std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
-        mutation();
-        calculateFitness();
-        sort();
-    }
-    printBestAndWorstSolution();
 }
 
 void GeneticDeployer::initPopulation()
@@ -57,6 +42,33 @@ void GeneticDeployer::initPopulation()
     {
         solution = std::make_unique<Chromosome>(*mDataHolder);
     }
+}
+
+void GeneticDeployer::calculate()
+{
+   while (not shouldEnd()) {
+        crossover();
+        mutation();
+        calculateFitness();
+        //sort();
+    }
+    printBest();
+}
+
+void GeneticDeployer::crossover()
+{
+    const auto ids = tournamentSelection();
+    std::vector<std::unique_ptr<Chromosome>> descendants;
+
+    descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]));
+    for (std::uint32_t i = 0; i < mNumberOfSelections - 1; ++i)
+    {
+        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
+    }
+    getMostSuited();
+    mSolutions.insert(mSolutions.end(),
+        std::make_move_iterator(descendants.begin()),
+        std::make_move_iterator(descendants.end()));
 }
 
 std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
@@ -92,26 +104,11 @@ std::uint32_t GeneticDeployer::getMostFitnessSolutionId(const std::vector<std::u
     return bestId;
 }
 
-void GeneticDeployer::crossover()
-{
-    const auto ids = tournamentSelection();
-    std::vector<std::unique_ptr<Chromosome>> descendants;
-
-    descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]));
-    for (std::uint32_t i = 0; i < mNumberOfSelections - 1; ++i)
-    {
-        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
-    }
-    getMostSuited();
-    mSolutions.insert(mSolutions.end(),
-        std::make_move_iterator(descendants.begin()),
-        std::make_move_iterator(descendants.end()));
-}
-
 void GeneticDeployer::mutation() {
+    static constexpr float mutationProbabilityRatio{0.15};
     std::uniform_real_distribution<> mutationProbabilityDis(0, 1);
     for (const auto& solution : mSolutions) {
-        if (mutationProbabilityDis(mMt) < 0.15) {
+        if (mutationProbabilityDis(mMt) < mutationProbabilityRatio) {
             solution->mutate();
         }
     }
@@ -136,9 +133,8 @@ void GeneticDeployer::sort() {
         });
 }
 
-void GeneticDeployer::printBestAndWorstSolution() {
-    sort();
-    std::cout << "Printing best " << (*mSolutions.begin())->mFitness << "\n";
+void GeneticDeployer::printBest() {
+    std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
 }
 
 void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
@@ -150,15 +146,17 @@ void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
 }
 
 bool GeneticDeployer::shouldEnd() {
-    return isDurationTooLong() or isFitnessPeakFound();
+    return isDurationTooLong() or isFitnessPeakFound() or isMaxGenerationReached();
 }
 
 bool GeneticDeployer::isDurationTooLong()
 {
-  static constexpr auto five_minutes{std::chrono::minutes(5)};
-  const auto currentTime{std::chrono::system_clock::now()};
-  return std::chrono::duration_cast<std::chrono::minutes>(
-      currentTime - mStartTime).count() < five_minutes.count();
+    static constexpr auto five_minutes{std::chrono::seconds(300)};
+    const auto currentTime{std::chrono::system_clock::now()};
+    const auto secondsSinceStart{std::chrono::duration_cast<std::chrono::seconds>(
+        currentTime - mStartTime).count()};
+    std::cout << "Program is running for " << secondsSinceStart << " seconds\n";
+    return secondsSinceStart < five_minutes.count();
 }
 
 bool GeneticDeployer::isFitnessPeakFound()
@@ -166,12 +164,26 @@ bool GeneticDeployer::isFitnessPeakFound()
     const auto& currentBestFitness = (*mSolutions.begin())->mFitness;
     if (mFitnessToOccurance.first == currentBestFitness) {
         if ((++mFitnessToOccurance.second) == mOccurancesToStopProgram) {
-          return true;
+            std::cout << "Fitness didn't change since " << mOccurancesToStopProgram
+                << ". Stopping program.\n";
+            return true;
         }
     } else {
         mFitnessToOccurance = std::make_pair(currentBestFitness, 1);
     }
     return false;
+}
+
+bool GeneticDeployer::isMaxGenerationReached()
+{
+    static constexpr std::uint32_t numberOfGenerations = 100;
+    if (mGeneration++ == numberOfGenerations) {
+        std::cout << "Stopping due to generation limit\n";
+        return true;
+    } else {
+        std::cout << "Current generation is " << mGeneration << "\n";
+        return false;
+    }
 }
 
 void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
