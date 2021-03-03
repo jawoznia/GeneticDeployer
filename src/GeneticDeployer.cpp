@@ -12,6 +12,7 @@
 #include <random>
 #include <stdexcept>
 #include <sstream>
+#include <ios>
 
 GeneticDeployer::GeneticDeployer(const std::string& filename)
     : mFileReader(std::make_unique<data::FileReader>(filename))
@@ -51,8 +52,8 @@ void GeneticDeployer::calculate()
         crossover();
         mutation();
         calculateFitness();
+        printBest();
     }
-    printBest();
 }
 
 void GeneticDeployer::crossover()
@@ -134,8 +135,8 @@ void GeneticDeployer::sort() {
 }
 
 void GeneticDeployer::printBest() {
-    sort();
-    std::cout << "Current best fitness " << (*mSolutions.begin())->mFitness << "\n";
+    const auto& currentBest{std::ranges::max_element(mSolutions.begin(), mSolutions.end())};
+    std::cout << "; Current best fitness " << (*currentBest)->mFitness << "\n";
 }
 
 void GeneticDeployer::checkIfAnySolutionHasDuplicates() {
@@ -156,8 +157,8 @@ bool GeneticDeployer::isDurationTooLong()
     const auto currentTime{std::chrono::system_clock::now()};
     const auto secondsSinceStart{std::chrono::duration_cast<std::chrono::seconds>(
         currentTime - mStartTime).count()};
-    std::cout << "Program is running for " << secondsSinceStart << " seconds\n";
-    return secondsSinceStart < five_minutes.count();
+    std::cout << "Running for " << secondsSinceStart << " seconds; ";
+    return secondsSinceStart > five_minutes.count();
 }
 
 bool GeneticDeployer::isFitnessPeakFound()
@@ -182,7 +183,7 @@ bool GeneticDeployer::isMaxGenerationReached()
         std::cout << "Stopping due to generation limit\n";
         return true;
     } else {
-        std::cout << "Current generation is " << mGeneration << "\n";
+        std::cout << "Generation " << mGeneration << "; ";
         return false;
     }
 }

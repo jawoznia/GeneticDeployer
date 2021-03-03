@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.2)
 
 set(This Genetic-deployer)
 set(LIB_DIR libs)
 project(${This} C CXX)
 
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 ######################################
@@ -46,9 +46,9 @@ add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
 # using CMake 2.8.11 or
 # later. Otherwise we have to add
 # them here ourselves.
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-    include_directories("${gtest_SOURCE_DIR}/include")
-endif()
+#if (CMAKE_VERSION VERSION_LESS 2.8.11)
+#    include_directories("${gtest_SOURCE_DIR}/include")
+#endif()
 #add_subdirectory(${LIB_DIR}/googletest ${LIB_DIR}/googlemock)
 
 SET(HEADERS
