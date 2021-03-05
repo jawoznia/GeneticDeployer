@@ -62,7 +62,7 @@ void GeneticDeployer::crossover()
     std::vector<std::unique_ptr<Chromosome>> descendants;
 
     descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]));
-    for (std::uint32_t i = 0; i < mNumberOfSelections - 1; ++i)
+    for (std::uint32_t i = 0; i < mNumberOfDescendants - 1; ++i)
     {
         descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
     }
@@ -74,7 +74,7 @@ void GeneticDeployer::crossover()
 
 std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
 {
-    std::vector<std::uint32_t> winningIds(mNumberOfSelections);
+    std::vector<std::uint32_t> winningIds(mNumberOfDescendants);
     std::uniform_int_distribution<> dis(0, mSizeOfPopulation - 1);
     for (auto& winningId : winningIds)
     {
@@ -122,20 +122,21 @@ void GeneticDeployer::calculateFitness() {
 }
 
 void GeneticDeployer::getMostSuited() {
-    static std::uint32_t numberOfParentsToNextGeneration = mSizeOfPopulation - mNumberOfSelections;
+    static std::uint32_t numberOfParentsToNextGeneration = mSizeOfPopulation - mNumberOfDescendants;
     sort();
     mSolutions.erase(mSolutions.begin() + numberOfParentsToNextGeneration, mSolutions.end());
 }
 
 void GeneticDeployer::sort() {
     std::sort(mSolutions.begin(), mSolutions.end(),
-        [](const std::unique_ptr<Chromosome>& chr1, const std::unique_ptr<Chromosome>& chr2) {
+        [](const auto& chr1, const auto& chr2) {
             return chr1->mFitness > chr2->mFitness;
         });
 }
 
 void GeneticDeployer::printBest() {
-    const auto& currentBest{std::ranges::max_element(mSolutions.begin(), mSolutions.end())};
+    const auto& currentBest{std::ranges::max_element(mSolutions,
+        [](const auto& chr1, const auto& chr2) { return chr1->mFitness < chr2->mFitness;})};
     std::cout << "; Current best fitness " << (*currentBest)->mFitness << "\n";
 }
 
@@ -195,7 +196,7 @@ void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
     scoreToSave << mFileName
                 << "\nSize_of_pop " << mSizeOfPopulation
                 << "\noccurances " << mOccurancesToStopProgram
-                << "\nselections " << mNumberOfSelections
+                << "\nselections " << mNumberOfDescendants
                 << "\nFitness " << fitness
                 << "\nTime " << elapsed_seconds.count() << "s";
     mFileExporter->appendData(scoreToSave.str());
@@ -206,13 +207,13 @@ void GeneticDeployer::setSizeOfPopulation(std::uint32_t sizeOfPopulation)
     mSizeOfPopulation = sizeOfPopulation;
 }
 
-void GeneticDeployer::setNumberOfStopOccurances(std::uint32_t occurancesToStopProgram)
+void GeneticDeployer::setOccurancesToStopProgram(std::uint32_t occurancesToStopProgram)
 {
     mOccurancesToStopProgram = occurancesToStopProgram;
 }
 
 void GeneticDeployer::setNumberOfDescendants(std::uint32_t numberOfDescendants)
 {
-    mNumberOfSelections = numberOfDescendants;
+    mNumberOfDescendants = numberOfDescendants;
 }
 

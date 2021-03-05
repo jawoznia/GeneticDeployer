@@ -19,7 +19,7 @@ public:
     GeneticDeployer(const std::string&);
 
     void setSizeOfPopulation(std::uint32_t);
-    void setNumberOfStopOccurances(std::uint32_t);
+    void setOccurancesToStopProgram(std::uint32_t);
     void setNumberOfDescendants(std::uint32_t);
 
     void start();
@@ -54,7 +54,7 @@ private:
     // Configuration parameters
     const std::string mFileName;
     std::uint32_t mSizeOfPopulation;
-    std::uint32_t mNumberOfSelections;
+    std::uint32_t mNumberOfDescendants;
     std::uint32_t mOccurancesToStopProgram;
     
     // Termination parameters
@@ -66,5 +66,5 @@ private:
     std::mt19937 mMt;
 };
 
-
 #endif //MAYBE_THIS_TIME_TESTS_GENETICDEPLOYER_HPP
+

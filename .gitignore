@@ -4,3 +4,4 @@ tests/lib/
 build/
 tests/build/
 libs/
+tags

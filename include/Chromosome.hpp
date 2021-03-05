@@ -37,10 +37,6 @@ public:
     void mutate();
     bool hasDuplicates();
 
-    bool operator <(const Chromosome& chr) {
-        return mFitness < chr.mFitness;
-    }
-
 private:
     Chromosome();
     void doCrossover(const Chromosome&);
