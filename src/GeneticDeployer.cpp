@@ -128,7 +128,7 @@ void GeneticDeployer::getMostSuited() {
 }
 
 void GeneticDeployer::sort() {
-    std::sort(mSolutions.begin(), mSolutions.end(),
+    std::ranges::sort(mSolutions,
         [](const auto& chr1, const auto& chr2) {
             return chr1->mFitness > chr2->mFitness;
         });
@@ -191,15 +191,17 @@ bool GeneticDeployer::isMaxGenerationReached()
 
 void GeneticDeployer::saveScoreToFile(std::uint32_t fitness) {
     std::stringstream scoreToSave;
-    auto endTime = std::chrono::system_clock::now();
-    std::chrono::duration<double> elapsed_seconds = endTime-mStartTime;
     scoreToSave << mFileName
                 << "\nSize_of_pop " << mSizeOfPopulation
                 << "\noccurances " << mOccurancesToStopProgram
                 << "\nselections " << mNumberOfDescendants
                 << "\nFitness " << fitness
-                << "\nTime " << elapsed_seconds.count() << "s";
+                << "\nTime " << getElapsedTime().count() << "s";
     mFileExporter->appendData(scoreToSave.str());
+}
+
+std::chrono::duration<double> GeneticDeployer::getElapsedTime() {
+    return std::chrono::system_clock::now() - mStartTime;
 }
 
 void GeneticDeployer::setSizeOfPopulation(std::uint32_t sizeOfPopulation)

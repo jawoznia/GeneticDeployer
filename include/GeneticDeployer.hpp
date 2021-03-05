@@ -43,6 +43,7 @@ private:
     void checkIfAnySolutionHasDuplicates();
     void sort();
     void saveScoreToFile(std::uint32_t fitness);
+    std::chrono::duration<double> getElapsedTime();
 
 private:
     std::unique_ptr<data::FileReader> mFileReader;
