@@ -59,12 +59,12 @@ void GeneticDeployer::calculate()
 void GeneticDeployer::crossover()
 {
     const auto ids = tournamentSelection();
-    std::vector<std::unique_ptr<Chromosome>> descendants;
+    std::vector<std::unique_ptr<Chromosome>> descendants(mNumberOfDescendants);
 
-    descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]));
-    for (std::uint32_t i = 0; i < mNumberOfDescendants - 1; ++i)
+    descendants[0] = std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]);
+    for (std::uint32_t i = 1; i < mNumberOfDescendants; ++i)
     {
-        descendants.emplace_back(std::make_unique<Chromosome>(*mSolutions[ids[i]], *mSolutions[ids[i + 1]]));
+        descendants[i] = std::make_unique<Chromosome>(*mSolutions[ids[i - 1]], *mSolutions[ids[i]]);
     }
     getMostSuited();
     mSolutions.insert(mSolutions.end(),
