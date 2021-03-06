@@ -158,8 +158,13 @@ bool GeneticDeployer::isDurationTooLong()
     const auto currentTime{std::chrono::system_clock::now()};
     const auto secondsSinceStart{std::chrono::duration_cast<std::chrono::seconds>(
         currentTime - mStartTime).count()};
-    std::cout << "Running for " << secondsSinceStart << " seconds; ";
-    return secondsSinceStart > five_minutes.count();
+    if (secondsSinceStart > five_minutes.count()) {
+        std::cout << "Program run for " << secondsSinceStart << ". Stopping.";
+        return true;
+    } else {
+        std::cout << "Running for " << secondsSinceStart << " seconds; ";
+        return false;
+    }
 }
 
 bool GeneticDeployer::isFitnessPeakFound()

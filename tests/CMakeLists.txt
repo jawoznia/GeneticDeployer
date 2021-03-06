@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.16)
 set(This Genetic-deployer-TESTS)
 
 set(Sources
-    ChromosomeTests.cpp
-    DeployerTests.cpp
+  # ChromosomeTests.cpp
+  # DeployerTests.cpp
     PerformanceTests.cpp
 
     PerformanceParameters.hpp
