@@ -203,32 +203,42 @@ void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
 // Simple swap mutation.
 // For @numberOfMutation times pair of people with same position are chosen and swapped
 void Chromosome::mutate() {
-    static constexpr int numberOfMutation = 2;
+    static constexpr int numberOfMutation = 4;
     for (int i = 0; i < numberOfMutation; ++i) {
-        std::uint32_t firRow;
-        std::uint32_t firColumn;
-        do {
-            firRow = getRandomRow();
-            firColumn = getRandomColumn();
-        } while (mSolution[firRow][firColumn].mType == SeatType::Unavailable);
-        std::uint32_t secRow;
-        std::uint32_t secColumn;
-        do {
-            secRow = getRandomRow();
-            secColumn = getRandomColumn();
-        } while (mSolution[firRow][firColumn].mType != mSolution[secRow][secColumn].mType);
-        std::swap(mSolution[firRow][firColumn], mSolution[firRow][firColumn]);
+        const auto coordinates{getTwoPeopleCoordinates()};
+        std::swap(mSolution[std::get<0>(coordinates)][std::get<1>(coordinates)],
+                  mSolution[std::get<2>(coordinates)][std::get<3>(coordinates)]);
    }
 }
 
+std::tuple<std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t>
+Chromosome::getTwoPeopleCoordinates() const {
+    std::uint32_t firRow;
+    std::uint32_t firColumn;
+    std::uint32_t secRow;
+    std::uint32_t secColumn;
+
+    do {
+        firRow = getRandomRow();
+        firColumn = getRandomColumn();
+    } while (mSolution[firRow][firColumn].mType == SeatType::Unavailable);
+    do {
+        secRow = getRandomRow();
+        secColumn = getRandomColumn();
+    } while (mSolution[firRow][firColumn].mType != mSolution[secRow][secColumn].mType
+              and firRow == secRow and firColumn == secColumn);
+
+    return {firRow, firColumn, secRow, secColumn};
+}
+
 std::uint32_t Chromosome::getRandomColumn() const {
-    std::uint32_t sizeOfColumns = mSolution[0].size();
+    const std::uint32_t sizeOfColumns = mSolution[0].size();
     std::uniform_int_distribution<> columnDis(0, sizeOfColumns - 1);
     return columnDis(mt);
 }
 
 std::uint32_t Chromosome::getRandomRow() const {
-    std::uint32_t sizeOfRows = mSolution.size();
+    const std::uint32_t sizeOfRows = mSolution.size();
     std::uniform_int_distribution<> rowDis(0, sizeOfRows - 1);
     return rowDis(mt);
 }
@@ -248,5 +258,18 @@ bool Chromosome::hasDuplicates() {
         }
     }
     return false;
+}
+
+void Chromosome::printSolution() const {
+  std::cout << __func__;
+    for (const auto& row : mSolution) {
+        for (const auto& gene : row) {
+            if (gene.mPerson) {
+                std::cout << gene.mPerson->person_id << " ";
+            }
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n";
 }
 

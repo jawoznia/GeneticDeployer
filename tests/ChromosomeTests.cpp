@@ -58,7 +58,7 @@ TEST_F(ChromosomeFixture, ShouldCreateProperMapOfSeats) {
     EXPECT_EQ(sut.mManagers.size(), 1);
     const auto& solution(sut.mSolution);
 
-    for (int column = 0; column < solution.size(); ++column)
+    for (std::uint32_t column = 0; column < solution.size(); ++column)
     {
         EXPECT_THAT(solution[0][column], IsUnavailable());
     }
@@ -136,5 +136,19 @@ TEST_F(ChromosomeFixture, DescendantShouldHaveEveryPerson) {
     EXPECT_EQ(descendant.mManagers.size(), 1);
     matchers::ChromosomeMatcher descendantMatcher(descendant);
     descendantMatcher.checkIfHasSamePeopleAs(parent1);
+}
+
+TEST_F(ChromosomeFixture, MutationShouldNotDeleteAnyData) {
+    Chromosome chromosome(createDataHolder(properInputData));
+    EXPECT_EQ(chromosome.mDevs.size(), 6);
+    EXPECT_EQ(chromosome.mManagers.size(), 1);
+    matchers::ChromosomeMatcher chromosomeMatcher(chromosome);
+
+    chromosome.mutate();
+
+    EXPECT_EQ(chromosome.mDevs.size(), 6);
+    EXPECT_EQ(chromosome.mManagers.size(), 1);
+    chromosomeMatcher.checkIfSolutionsAreDifferent(chromosome);
+    chromosomeMatcher.checkIfHasSamePeopleAs(chromosome);
 }
 

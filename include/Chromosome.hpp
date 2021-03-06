@@ -28,14 +28,10 @@ public:
 
     void initSolution(const data::DataHolder&);
     void calculateFitness();
-    void calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
-        const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns);
-    void addPersonScoreToFitness(const Person&, const Person&);
-    std::uint32_t getFitness();
-    void setPerson(Gene& gene);
-    void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
     void mutate();
     bool hasDuplicates();
+    std::uint32_t getFitness();
+    void printSolution() const;
 
 private:
     Chromosome();
@@ -46,6 +42,13 @@ private:
     void addToContainer(std::vector<std::shared_ptr<Person>>&, const std::shared_ptr<Person>&, std::uint32_t, std::uint32_t);
     std::uint32_t getNumberOfCommonSkills(const Person&, const Person&);
     std::uint32_t getNumberOfAllSkills(const Person&, const Person&);
+    void calculatePairsScore(const std::uint32_t row, const std::uint32_t column,
+        const std::uint32_t sizeOfRows, const std::uint32_t sizeOfColumns);
+    void addPersonScoreToFitness(const Person&, const Person&);
+    void setPerson(Gene& gene);
+    void setPerson(Gene& gene, std::vector<std::shared_ptr<Person>>& people);
+
+    std::tuple<std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t> getTwoPeopleCoordinates() const;
 
 public:
     std::uint32_t mFitness;
