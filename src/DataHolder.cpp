@@ -27,8 +27,8 @@ void DataHolder::SetSeats(const std::vector<std::string>& words) {
     SetSeatsWidth(std::stoi(words.at(1)));
     SetSeatsHeight(std::stoi(words.at(0)));
 
-    for (int row_index = 0; row_index < mSeats.size(); ++row_index) {
-        for (int column_index = 0; column_index < mSeats[row_index].size(); ++column_index) {
+    for (std::uint32_t row_index = 0; row_index < mSeats.size(); ++row_index) {
+        for (std::uint32_t column_index = 0; column_index < mSeats[row_index].size(); ++column_index) {
           //  std::cout << "row_index = " << row_index << "; column_index = " << column_index << "\n";
             SetSeat(row_index, column_index, words.at(row_index + 2).at(column_index));
         }
@@ -72,10 +72,10 @@ std::shared_ptr<Person> DataHolder::CreateDeveloper() {
     dev->bonus_potential = std::stoi(std::string(*mWords_iterator));
 
     std::advance(mWords_iterator, 1);
-    const auto skills_size = std::stoi(std::string(*mWords_iterator));
+    const std::uint32_t skills_size = std::stoi(std::string(*mWords_iterator));
 
     std::vector<uint32_t> skills(skills_size);
-    for (uint32_t i = 0; i < skills_size; ++i) {
+    for (std::uint32_t i = 0; i < skills_size; ++i) {
         std::advance(mWords_iterator, 1);
         skills.at(i) = insertSkill(*mWords_iterator);
     }
@@ -97,17 +97,15 @@ uint32_t DataHolder::insertSkill(const std::string& skill_name) {
     return inserted_skill.second ? skill_id++ : inserted_skill.first->second;
 }
 
-void DataHolder::SetManagers(const std::vector<std::string> &words) {
+void DataHolder::SetManagers() {
     const uint32_t size_of_managers = std::stoi(*mWords_iterator);
     if (size_of_managers == 0)
     {
         return;
     }
-    //std::cout << "managers size is " << size_of_managers << std::endl;
     mManagers.resize(size_of_managers);
 
     std::advance(mWords_iterator, 1);
-  //  std::cout << "wolololo" << std::endl;
     for (uint32_t i = 0; i < size_of_managers; ++i) {
         mManagers.at(i) = CreateManager();
     }
@@ -120,7 +118,7 @@ std::shared_ptr<Person> DataHolder::CreateManager() {
     std::advance(mWords_iterator, 1);
     manager->bonus_potential = std::stoi(*mWords_iterator);
     std::advance(mWords_iterator, 1);
-    return std::move(manager);
+    return manager;
 }
 
 std::vector<std::shared_ptr<Person>> DataHolder::getDevelopers() const

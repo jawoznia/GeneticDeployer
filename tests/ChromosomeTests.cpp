@@ -24,7 +24,7 @@ public:
         data::DataHolder holder;
         holder.SetSeats(data);
         holder.SetDevelopers(data);
-        holder.SetManagers(data);
+        holder.SetManagers();
         return holder;
     }
 

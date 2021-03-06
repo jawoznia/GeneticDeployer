@@ -20,7 +20,7 @@ public:
     DataHolder() = default;
     void SetSeats(const std::vector<std::string>&);
     void SetDevelopers(const std::vector<std::string>&);
-    void SetManagers(const std::vector<std::string>&);
+    void SetManagers();
 
     std::vector<std::shared_ptr<Person>> getDevelopers() const;
     std::vector<std::shared_ptr<Person>> getManagers() const;
