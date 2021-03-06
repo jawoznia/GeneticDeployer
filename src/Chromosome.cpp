@@ -36,7 +36,6 @@ void Chromosome::initSolution(const data::DataHolder& data)
             setPerson(mSolution[row][column]);
         }
     }
-    //std::cout << "Solution initialized!" << std::endl;
 }
 
 void Chromosome::setPerson(Gene& gene)
@@ -127,19 +126,30 @@ void Chromosome::calculatePairsScore(const std::uint32_t row, const std::uint32_
 
 void Chromosome::addPersonScoreToFitness(const Person& person1, const Person& person2)
 {
-    std::unordered_set<std::uint32_t> allSkills;
-    std::merge(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(),
-        std::inserter(allSkills, allSkills.begin()));
-    std::unordered_set<std::uint32_t> commonSkills;
-    std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
-        person2.skill_ids.begin(), person2.skill_ids.end(),
-        std::inserter(commonSkills, commonSkills.begin()));
-    const std::uint32_t workPotential = commonSkills.size() * (allSkills.size() - commonSkills.size());
+    const std::uint32_t commonSkillsNumber{getNumberOfCommonSkills(person1, person2)};
+    const std::uint32_t allSkillsNumber{getNumberOfAllSkills(person1, person2)};
+    const std::uint32_t workPotential = commonSkillsNumber * (allSkillsNumber - commonSkillsNumber);
     const std::uint32_t bonusPotential =
         person1.company_id == person2.company_id ? person1.bonus_potential * person2.bonus_potential : 0;
 
     mFitness += workPotential + bonusPotential;
+}
+
+std::uint32_t Chromosome::getNumberOfAllSkills(const Person& person1, const Person& person2)
+{
+    std::unordered_set<std::uint32_t> allSkills;
+    std::merge(person1.skill_ids.begin(), person1.skill_ids.end(),
+        person2.skill_ids.begin(), person2.skill_ids.end(),
+        std::inserter(allSkills, allSkills.begin()));
+    return allSkills.size();
+}
+
+std::uint32_t Chromosome::getNumberOfCommonSkills(const Person& person1, const Person& person2) {
+    std::unordered_set<std::uint32_t> commonSkills;
+    std::set_intersection(person1.skill_ids.begin(), person1.skill_ids.end(),
+        person2.skill_ids.begin(), person2.skill_ids.end(),
+        std::inserter(commonSkills, commonSkills.begin()));
+    return commonSkills.size();
 }
 
 std::uint32_t Chromosome::getFitness()

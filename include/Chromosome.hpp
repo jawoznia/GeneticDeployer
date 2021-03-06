@@ -44,6 +44,8 @@ private:
     std::uint32_t getRandomRow() const;
     void insertPerson(const Gene&, std::uint32_t, std::uint32_t);
     void addToContainer(std::vector<std::shared_ptr<Person>>&, const std::shared_ptr<Person>&, std::uint32_t, std::uint32_t);
+    std::uint32_t getNumberOfCommonSkills(const Person&, const Person&);
+    std::uint32_t getNumberOfAllSkills(const Person&, const Person&);
 
 public:
     std::uint32_t mFitness;
