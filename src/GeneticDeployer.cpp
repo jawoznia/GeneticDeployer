@@ -31,9 +31,9 @@ void GeneticDeployer::start() {
 }
 
 void GeneticDeployer::init() {
-    mStartTime = std::chrono::system_clock::now();
     mDataHolder = mFileReader->LoadData();
     initPopulation();
+    mStartTime = std::chrono::system_clock::now();
 }
 
 void GeneticDeployer::initPopulation()

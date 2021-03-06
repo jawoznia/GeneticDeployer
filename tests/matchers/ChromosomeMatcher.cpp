@@ -30,6 +30,20 @@ public:
         ASSERT_THAT(mPeopleIds, testing::Not(testing::ContainerEq(chrIds)));
     }
 
+    void checkIfPeopleAreSittingOnProperSeats() {
+        for (const auto& row : mSolution) {
+            for (const auto& gene : row) {
+                if (gene.mType == SeatType::Unavailable) {
+                    EXPECT_TRUE(gene.mPerson == nullptr);
+                } else if (gene.mType == SeatType::Developer) {
+                    EXPECT_FALSE(gene.mPerson->skill_ids.empty());
+                } else {
+                    EXPECT_TRUE(gene.mPerson->skill_ids.empty());
+                }
+            }
+        }
+    }
+
     std::vector<std::uint32_t> getAllPersonIds(const Chromosome& chromosome) const {
         std::vector<std::uint32_t> personIds;
         for (const auto& person : chromosome.mDevs) {

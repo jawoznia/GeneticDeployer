@@ -124,8 +124,9 @@ TEST_F(ChromosomeFixture, ShouldHandleEmptySeats) {
 }
 
 TEST_F(ChromosomeFixture, DescendantShouldHaveEveryPerson) {
-    Chromosome parent1(createDataHolder(properInputData));
-    Chromosome parent2(createDataHolder(properInputData));
+    const auto dataHolder{createDataHolder(properInputData)};
+    Chromosome parent1(dataHolder);
+    Chromosome parent2(dataHolder);
     EXPECT_EQ(parent1.mDevs.size(), 6);
     EXPECT_EQ(parent1.mManagers.size(), 1);
     EXPECT_EQ(parent2.mDevs.size(), 6);
@@ -135,7 +136,11 @@ TEST_F(ChromosomeFixture, DescendantShouldHaveEveryPerson) {
     EXPECT_EQ(descendant.mDevs.size(), 6);
     EXPECT_EQ(descendant.mManagers.size(), 1);
     matchers::ChromosomeMatcher descendantMatcher(descendant);
+    descendantMatcher.checkIfSolutionsAreDifferent(parent1);
+    descendantMatcher.checkIfSolutionsAreDifferent(parent2);
     descendantMatcher.checkIfHasSamePeopleAs(parent1);
+    descendantMatcher.checkIfHasSamePeopleAs(parent2);
+    descendantMatcher.checkIfPeopleAreSittingOnProperSeats();
 }
 
 TEST_F(ChromosomeFixture, MutationShouldNotDeleteAnyData) {
@@ -150,5 +155,6 @@ TEST_F(ChromosomeFixture, MutationShouldNotDeleteAnyData) {
     EXPECT_EQ(chromosome.mManagers.size(), 1);
     chromosomeMatcher.checkIfSolutionsAreDifferent(chromosome);
     chromosomeMatcher.checkIfHasSamePeopleAs(chromosome);
+    chromosomeMatcher.checkIfPeopleAreSittingOnProperSeats();
 }
 
