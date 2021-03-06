@@ -203,7 +203,7 @@ void Chromosome::addToContainer(std::vector<std::shared_ptr<Person>>& people,
 // Simple swap mutation.
 // For @numberOfMutation times pair of people with same position are chosen and swapped
 void Chromosome::mutate() {
-    static constexpr int numberOfMutation = 4;
+    static constexpr int numberOfMutation = 3;
     for (int i = 0; i < numberOfMutation; ++i) {
         const auto coordinates{getTwoPeopleCoordinates()};
         std::swap(mSolution[std::get<0>(coordinates)][std::get<1>(coordinates)],
