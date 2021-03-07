@@ -1,0 +1,138 @@
+../data/a_solar.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 250
+Time 0.00575465s
+../data/b_dream.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 240192
+Time 40.6213s
+../data/c_soup.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 24690
+Time 38.6251s
+../data/d_maelstrom.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 116478
+Time 155.688s
+../data/e_igloos.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 81674
+Time 129.612s
+../data/f_glitch.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 278640
+Time 187.142s
+../data/a_solar.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 226
+Time 0.00409067s
+../data/a_solar.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 252
+Time 0.0200635s
+../data/a_solar.txt
+Size_of_pop 150
+occurances 5
+selections 120
+Fitness 246
+Time 0.031862s
+../data/a_solar.txt
+Size_of_pop 200
+occurances 5
+selections 160
+Fitness 244
+Time 0.0156709s
+../data/b_dream.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 240866
+Time 73.9252s
+../data/b_dream.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 252774
+Time 304.658s
+../data/b_dream.txt
+Size_of_pop 150
+occurances 5
+selections 120
+Fitness 243652
+Time 301.651s
+../data/b_dream.txt
+Size_of_pop 200
+occurances 5
+selections 160
+Fitness 245692
+Time 304.601s
+../data/c_soup.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 25828
+Time 34.6252s
+../data/c_soup.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 25764
+Time 87.3303s
+../data/c_soup.txt
+Size_of_pop 150
+occurances 5
+selections 120
+Fitness 27472
+Time 142.035s
+../data/d_maelstrom.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 120808
+Time 311.47s
+../data/d_maelstrom.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 120184
+Time 303.634s
+../data/e_igloos.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 85676
+Time 277.285s
+../data/e_igloos.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 85842
+Time 319.638s
+../data/f_glitch.txt
+Size_of_pop 50
+occurances 5
+selections 40
+Fitness 279950
+Time 330.455s
+../data/f_glitch.txt
+Size_of_pop 100
+occurances 5
+selections 80
+Fitness 274190
+Time 349.486s
