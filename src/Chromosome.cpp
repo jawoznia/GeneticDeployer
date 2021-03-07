@@ -23,15 +23,10 @@ Chromosome::Chromosome(const data::DataHolder& data)
 
 Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
 {
-//    std::cout << __func__;
     mSolution = parent1.mSolution;
     mDevs = parent1.mDevs;
     mManagers = parent1.mManagers;
-    try {
-        doCrossover(parent2);
-    } catch (const std::bad_alloc& e) {
-      std::cout << "Allocation failed: " << e.what() << "\n";
-    }
+    doCrossover(parent2);
 }
 
 void Chromosome::initSolution(const data::DataHolder& data)
@@ -176,9 +171,6 @@ void Chromosome::doCrossover(const Chromosome& parent2)
     std::uint32_t rowIndex = getRandomRow();
     std::uint32_t columnIndex = getRandomColumn();
 
-//    std::cout << __func__ << "row " << rowIndex << "; column " << columnIndex
-  //            << "; " << mSolution.size() << "; ";
-   // if (not mSolution.empty()) std::cout << mSolution[0].size() << "\n";
     for (std::uint32_t row = rowIndex; row < mSolution.size(); ++row) {
         for (std::uint32_t column = columnIndex; column < mSolution[row].size(); ++column) {
             if (parent2.mSolution[row][column].mType == SeatType::Unavailable) {

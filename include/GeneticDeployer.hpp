@@ -57,6 +57,7 @@ private:
     std::uint32_t mSizeOfPopulation;
     std::uint32_t mNumberOfDescendants;
     std::uint32_t mOccurancesToStopProgram;
+    std::uint32_t mNumberOfParentsToNextGeneration;
     
     // Termination parameters
     std::chrono::time_point<std::chrono::system_clock> mStartTime;

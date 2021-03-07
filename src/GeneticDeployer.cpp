@@ -31,6 +31,7 @@ void GeneticDeployer::start() {
 }
 
 void GeneticDeployer::init() {
+    mNumberOfParentsToNextGeneration = mSizeOfPopulation - mNumberOfDescendants;
     mDataHolder = mFileReader->LoadData();
     initPopulation();
     mStartTime = std::chrono::system_clock::now();
@@ -47,15 +48,10 @@ void GeneticDeployer::initPopulation()
 
 void GeneticDeployer::calculate()
 {
-    std::cout << __func__ << " starts.\n";
     while (not shouldEnd()) {
-//        std::cout << "starting crossoverer ";
         crossover();
-  //      std::cout << "starting mutation ";
         mutation();
-    //    std::cout << "starting calculateFitness ";
         calculateFitness();
-      //  std::cout << "starting printBest\n";
         printBest();
     }
 }
@@ -68,8 +64,6 @@ void GeneticDeployer::crossover()
     descendants[0] = std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]);
     for (std::uint32_t i = 1; i < mNumberOfDescendants; ++i)
     {
-        if (mSolutions[ids[i - 1]] == nullptr) { std::runtime_error("nullptr found!"); }
-        if (mSolutions[ids[i]] == nullptr) { std::runtime_error("nullptr found!"); }
         descendants[i] = std::make_unique<Chromosome>(*mSolutions[ids[i - 1]], *mSolutions[ids[i]]);
     }
     getMostSuited();
@@ -128,9 +122,8 @@ void GeneticDeployer::calculateFitness() {
 }
 
 void GeneticDeployer::getMostSuited() {
-    static std::uint32_t numberOfParentsToNextGeneration = mSizeOfPopulation - mNumberOfDescendants;
     sort();
-    mSolutions.erase(mSolutions.begin() + numberOfParentsToNextGeneration, mSolutions.end());
+    mSolutions.erase(mSolutions.begin() + mNumberOfParentsToNextGeneration, mSolutions.end());
 }
 
 void GeneticDeployer::sort() {
