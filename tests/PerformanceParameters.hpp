@@ -7,10 +7,10 @@ namespace data
 
 struct PerformanceParameters {
     PerformanceParameters(const std::string& fileName, std::uint32_t sizeOfPopulation,
-        std::uint32_t numberOfSelections, std::uint8_t occurancesToStopProgram)
+        std::uint32_t numberOfDescendants, std::uint8_t occurancesToStopProgram)
         : fileName(fileName)
         , sizeOfPopulation(sizeOfPopulation)
-        , numberOfSelections(numberOfSelections)
+        , numberOfDescendants(numberOfDescendants)
         , occurancesToStopProgram(occurancesToStopProgram)
     {}
 
@@ -18,7 +18,7 @@ public:
     std::string fileName;
 
     std::uint32_t sizeOfPopulation;
-    std::uint32_t numberOfSelections;
+    std::uint32_t numberOfDescendants;
     std::uint8_t occurancesToStopProgram;
   };
 

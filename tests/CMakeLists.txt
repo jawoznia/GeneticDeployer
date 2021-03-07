@@ -4,8 +4,8 @@ set(This Genetic-deployer-TESTS)
 
 set(Sources
   # ChromosomeTests.cpp
-  # DeployerTests.cpp
-    PerformanceTests.cpp
+   # DeployerTests.cpp
+   PerformanceTests.cpp
 
     PerformanceParameters.hpp
     matchers/ChromosomeMatcher.cpp

@@ -25,7 +25,7 @@ TEST_P(PerformanceFixture, MakeResearch) {
     mSut = std::make_unique<GeneticDeployer>(param.fileName);
     mSut->setSizeOfPopulation(param.sizeOfPopulation);
     mSut->setOccurancesToStopProgram(param.occurancesToStopProgram);
-    mSut->setNumberOfDescendants(param.numberOfSelections);
+    mSut->setNumberOfDescendants(param.numberOfDescendants);
     mSut->start();
 }
 

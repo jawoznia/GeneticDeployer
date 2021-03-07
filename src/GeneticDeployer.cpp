@@ -49,9 +49,13 @@ void GeneticDeployer::calculate()
 {
     std::cout << __func__ << " starts.\n";
     while (not shouldEnd()) {
+//        std::cout << "starting crossoverer ";
         crossover();
+  //      std::cout << "starting mutation ";
         mutation();
+    //    std::cout << "starting calculateFitness ";
         calculateFitness();
+      //  std::cout << "starting printBest\n";
         printBest();
     }
 }
@@ -64,6 +68,8 @@ void GeneticDeployer::crossover()
     descendants[0] = std::make_unique<Chromosome>(*mSolutions[*ids.begin()], *mSolutions[*ids.rbegin()]);
     for (std::uint32_t i = 1; i < mNumberOfDescendants; ++i)
     {
+        if (mSolutions[ids[i - 1]] == nullptr) { std::runtime_error("nullptr found!"); }
+        if (mSolutions[ids[i]] == nullptr) { std::runtime_error("nullptr found!"); }
         descendants[i] = std::make_unique<Chromosome>(*mSolutions[ids[i - 1]], *mSolutions[ids[i]]);
     }
     getMostSuited();
@@ -78,7 +84,7 @@ std::vector<std::uint32_t> GeneticDeployer::tournamentSelection()
     std::uniform_int_distribution<> dis(0, mSizeOfPopulation - 1);
     for (auto& winningId : winningIds)
     {
-        const static std::uint32_t sizeOfSingleTournament = 5;
+        constexpr static std::uint32_t sizeOfSingleTournament = 5;
         std::vector<std::uint32_t> ids(sizeOfSingleTournament);
         for (auto& id : ids)
         {

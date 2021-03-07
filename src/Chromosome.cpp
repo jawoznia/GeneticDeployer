@@ -5,6 +5,9 @@
 #include <unordered_set>
 #include <set>
 
+std::random_device Chromosome::rd;
+std::mt19937 Chromosome::mt = std::mt19937(Chromosome::rd());
+
 Chromosome::Chromosome() = default;
 
 Chromosome::~Chromosome() = default;
@@ -18,8 +21,18 @@ Chromosome::Chromosome(const data::DataHolder& data)
     calculateFitness();
 }
 
-std::random_device Chromosome::rd;
-std::mt19937 Chromosome::mt = std::mt19937(Chromosome::rd());
+Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
+{
+//    std::cout << __func__;
+    mSolution = parent1.mSolution;
+    mDevs = parent1.mDevs;
+    mManagers = parent1.mManagers;
+    try {
+        doCrossover(parent2);
+    } catch (const std::bad_alloc& e) {
+      std::cout << "Allocation failed: " << e.what() << "\n";
+    }
+}
 
 void Chromosome::initSolution(const data::DataHolder& data)
 {
@@ -157,22 +170,17 @@ std::uint32_t Chromosome::getFitness()
     return mFitness;
 }
 
-Chromosome::Chromosome(const Chromosome& parent1, const Chromosome& parent2)
-{
-    mSolution = parent1.mSolution;
-    mDevs = parent1.mDevs;
-    mManagers = parent1.mManagers;
-    doCrossover(parent2);
-}
-
 // Will make crossover using one random gene as an pivot.
 void Chromosome::doCrossover(const Chromosome& parent2)
 {
     std::uint32_t rowIndex = getRandomRow();
     std::uint32_t columnIndex = getRandomColumn();
 
+//    std::cout << __func__ << "row " << rowIndex << "; column " << columnIndex
+  //            << "; " << mSolution.size() << "; ";
+   // if (not mSolution.empty()) std::cout << mSolution[0].size() << "\n";
     for (std::uint32_t row = rowIndex; row < mSolution.size(); ++row) {
-        for (std::uint32_t column = columnIndex; column < mSolution[0].size(); ++column) {
+        for (std::uint32_t column = columnIndex; column < mSolution[row].size(); ++column) {
             if (parent2.mSolution[row][column].mType == SeatType::Unavailable) {
                 continue;
             }
@@ -261,7 +269,7 @@ bool Chromosome::hasDuplicates() {
 }
 
 void Chromosome::printSolution() const {
-  std::cout << __func__;
+  std::cout << __func__ << "\n";
     for (const auto& row : mSolution) {
         for (const auto& gene : row) {
             if (gene.mPerson) {
